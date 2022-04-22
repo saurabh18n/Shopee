@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using OnlineShoppingWebApp;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,7 +17,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
+builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 

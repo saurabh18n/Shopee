@@ -2,9 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row justify-content-center align-content-center" style="height:80vh">
-    <div class="col col-sm-12 col-md-8 col-lg-8 col-xl-8 p-3 d-flex justify-content-center align-content-center">
-        <div class="d-flex">
+<div class="row justify-content-center align-content-center" style="height:70vh">
+    <div class="col col-sm-12 col-md-8 col-lg-8 col-xl-8 p-3">
+        <div class="d-flex justify-content-center align-content-center">
             <div class="d-flex flex-column justify-content-center align-content-center p-3"
                 style="width:400px;min-width:200px;background-color:#9edeaf;">
                 <div class="mb-3">
@@ -20,12 +20,14 @@
                 <div class="mb-3">
                     <h4>Login</h4>
                 </div>
-                <form method="post" asp-action="Login" asp-controller="Account">
+                <form method="post" asp-action="login" asp-controller="account" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="username" placeholder="Username" autocomplete="off">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                            autocomplete="off">
                     </div>
                     <div class="mb-3">
-                        <input type="password" class="form-control" id="password" placeholder="Username">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                            autocomplete="current-password">
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="from-control btn btn-block btn-primary w-100">Login</button>
@@ -33,5 +35,10 @@
                 </form>
             </div>
         </div>
+        <div class="alert alert-danger mx-auto mt-3 text-center @(string.IsNullOrEmpty((string)ViewBag.ErrorMessage) ? "d-none" : "")"
+            style="width: 800px;" role="alert">
+            <p class="mx-auto my-auto p-0">@ViewBag.ErrorMessage</p>
+        </div>
     </div>
+
 </div>

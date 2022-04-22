@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj": {}
+    "C:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\OnlineShoppingWebApp.csproj": {}
   },
   "projects": {
-    "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj": {
+    "C:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\OnlineShoppingWebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj",
-        "projectName": "Shopee",
-        "projectPath": "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj",
-        "packagesPath": "C:\\Users\\itadmin\\.nuget\\packages\\",
-        "outputPath": "D:\\DRDO\\Day 4\\ECom\\Shopee\\obj\\",
+        "projectUniqueName": "C:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\OnlineShoppingWebApp.csproj",
+        "projectName": "OnlineShoppingWebApp",
+        "projectPath": "C:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\OnlineShoppingWebApp.csproj",
+        "packagesPath": "C:\\Users\\saurabh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\itadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\saurabh\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,6 +38,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -77,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
