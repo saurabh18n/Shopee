@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\OnlineShoppingWebApp.csproj",
+  "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Shopee.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "6.0",
@@ -16295,76 +16295,81 @@
     ],
     "CSharpLanguageVersion": 1000
   },
-  "RootNamespace": "OnlineShoppingWebApp",
+  "RootNamespace": "Shopee",
   "Documents": [
     {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
-      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Account\\Register.cshtml",
-      "TargetPath": "Views\\Account\\Register.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Shared\\Error.cshtml",
-      "TargetPath": "Views\\Shared\\Error.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Account\\Index.cshtml",
-      "TargetPath": "Views\\Account\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Home\\About.cshtml",
-      "TargetPath": "Views\\Home\\About.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Product\\Index.cshtml",
-      "TargetPath": "Views\\Product\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Home\\Privacy.cshtml",
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Home\\Privacy.cshtml",
       "TargetPath": "Views\\Home\\Privacy.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\_ViewStart.cshtml",
-      "TargetPath": "Views\\_ViewStart.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Account\\Noaccess.cshtml",
-      "TargetPath": "Views\\Account\\Noaccess.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Home\\Index.cshtml",
-      "TargetPath": "Views\\Home\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\_ViewImports.cshtml",
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Account\\Login.cshtml",
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\_ViewStart.cshtml",
+      "TargetPath": "Views\\_ViewStart.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Shared\\Error.cshtml",
+      "TargetPath": "Views\\Shared\\Error.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Product\\Index.cshtml",
+      "TargetPath": "Views\\Product\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Home\\About.cshtml",
+      "TargetPath": "Views\\Home\\About.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Account\\Noaccess.cshtml",
+      "TargetPath": "Views\\Account\\Noaccess.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Account\\Register.cshtml",
+      "TargetPath": "Views\\Account\\Register.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Shared\\_Layout.cshtml",
+      "TargetPath": "Views\\Shared\\_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Account\\Login.cshtml",
       "TargetPath": "Views\\Account\\Login.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Admin\\Index.cshtml",
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Account\\Index.cshtml",
+      "TargetPath": "Views\\Account\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Admin\\Index.cshtml",
       "TargetPath": "Views\\Admin\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee\\Shopee\\Views\\Shared\\_Layout.cshtml",
-      "TargetPath": "Views\\Shared\\_Layout.cshtml",
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Home\\Index.cshtml",
+      "TargetPath": "Views\\Home\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\saurabh\\Desktop\\Projects\\Shopee_2\\Shopee\\Shopee\\Views\\Account\\__Register.cshtml",
+      "TargetPath": "Views\\Account\\__Register.cshtml",
       "FileKind": "mvc"
     }
   ],
