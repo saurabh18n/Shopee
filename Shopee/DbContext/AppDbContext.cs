@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
-using OnlineShoppingWebApp.Models;
+using Shopee.Models;
 
-namespace OnlineShoppingWebApp
+namespace Shopee
 {
     public partial class AppDbContext : DbContext
     {
@@ -47,7 +47,7 @@ namespace OnlineShoppingWebApp
                 Location = "Office",
                 IsAdmin = true,
                 ContactNumber = "0000000",
-                Email= "admin@local.com"
+                Email = "admin@local.com"
             });
 
             OnModelCreatingPartial(modelBuilder);

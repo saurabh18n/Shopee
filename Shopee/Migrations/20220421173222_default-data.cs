@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace OnlineShoppingWebApp.Migrations
+namespace Shopee.Migrations
 {
     public partial class defaultdata : Migration
     {

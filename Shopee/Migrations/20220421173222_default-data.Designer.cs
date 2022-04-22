@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OnlineShoppingWebApp;
+using Shopee;
 
 #nullable disable
 
-namespace OnlineShoppingWebApp.Migrations
+namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220421173222_default-data")]
@@ -24,7 +24,7 @@ namespace OnlineShoppingWebApp.Migrations
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
 
-            modelBuilder.Entity("OnlineShoppingWebApp.Models.User", b =>
+            modelBuilder.Entity("Shopee.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShoppingWebApp.Models;
+using Shopee.Models;
 
-namespace OnlineShoppingWebApp.Controllers;
+namespace Shopee.Controllers;
 [Authorize(Roles = "Administrator")]
 public class AdminController : Controller
 {

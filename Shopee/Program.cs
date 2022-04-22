@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using OnlineShoppingWebApp;
+using Shopee;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
