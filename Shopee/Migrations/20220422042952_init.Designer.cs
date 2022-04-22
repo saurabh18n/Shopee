@@ -11,7 +11,7 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220421172314_init")]
+    [Migration("20220422042952_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("c26669af-c2c0-47c8-9266-8b586b9b3fd8"));
+                        .HasDefaultValue(new Guid("bdd20660-0703-42b2-9c59-e6d644bff517"));
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -65,6 +65,20 @@ namespace Shopee.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("02e6af33-4da7-4a0d-96a7-a380b116a28f"),
+                            ContactNumber = "0000000",
+                            Email = "admin@local.com",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "",
+                            Location = "Office",
+                            Password = "admin",
+                            Username = "admin"
+                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -26,4 +26,7 @@ public class User
     [Required]
     public bool IsAdmin { get; set; }
 
+    [Required]
+    public bool IsActive { get; set; }
+
 }

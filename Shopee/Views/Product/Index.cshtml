@@ -1,8 +1,42 @@
+@using Shopee.Models
+@model List<Shopee.Models.Product>
 @{
     ViewData["Title"] = "Products";
 }
+<div class="row">
+    @foreach (Product item in ViewBag.Products)
+    {
+        <div class="card mx-2 my-2" style="width: 18rem;">
+            <h6 class="card-title text-center mt-1">@item.Title</h6>
+            <div id="a@{@item.Id.ToString().Replace("-","");}" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var iitem in item.Images.Select((value, index) => new { value, index }))
+                    {
+                        <div class="carousel-item @(iitem.index == 0 ?"active":"")">
+                            <img class="d-block w-100" src="data:image/png;base64,@Convert.ToBase64String(iitem.value.Image)"
+                        style="height:200px; width200px">
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button"
+                data-bs-target="#a@{@item.Id.ToString().Replace("-","");}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                data-bs-target="#a@{@item.Id.ToString().Replace("-","");}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
 
-<div class="text-center">
-    <p>Product Home</p>
-
+            <div class="card-body my-1">
+                <p class="card-text">@item.Desc</p>
+            </div>
+            <div class="my-2 text-center">
+                <a href="/product/product/@{@item.Id}" class="btn btn-primary me-3">View</a>
+                <a href="#" class="btn btn-primary">Add</a>
+            </div>
+        </div>
+    }
 </div>

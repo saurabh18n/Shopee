@@ -11,8 +11,8 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220421113817_init")]
-    partial class init
+    [Migration("20220422043110_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("d6815066-1953-4678-a6bb-3105815ec0c7"));
+                        .HasDefaultValue(new Guid("513adede-7114-48cd-a66e-14f61dbd4187"));
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -42,6 +42,14 @@ namespace Shopee.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -61,7 +69,22 @@ namespace Shopee.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("41bbecdd-5925-4249-a465-426e2bd1fcb4"),
+                            ContactNumber = "0000000",
+                            Email = "admin@local.com",
+                            FirstName = "Admin",
+                            IsActive = false,
+                            IsAdmin = true,
+                            LastName = "",
+                            Location = "Office",
+                            Password = "admin",
+                            Username = "admin"
+                        });
                 });
 #pragma warning restore 612, 618
         }

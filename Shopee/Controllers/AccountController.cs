@@ -27,8 +27,9 @@ public class AccountController : Controller
     {
         return View();
     }
+
     [HttpPost, AllowAnonymous, ActionName("login"), ValidateAntiForgeryToken]
-    async public Task<IActionResult> LoginPost([FromForm] string username, [FromForm] string password)
+    async public Task<IActionResult> Login([FromForm] string username, [FromForm] string password)
     {
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
@@ -45,7 +46,10 @@ public class AccountController : Controller
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, loginUser.Username),
-            new Claim("FullName", loginUser.FirstName + " " + loginUser.LastName)
+            new Claim(ClaimTypes.PrimarySid, loginUser.Username),
+
+            new Claim("FullName", loginUser.FirstName + " " + loginUser.LastName),
+            new Claim("Id",loginUser.Id.ToString())
         };
         if (loginUser.IsAdmin)
         {
@@ -76,6 +80,7 @@ public class AccountController : Controller
 
         }
     }
+
     [Authorize]
     public async Task<IActionResult> Logout()
     {
@@ -87,8 +92,9 @@ public class AccountController : Controller
     {
         return View();
     }
+
     [HttpPost, ActionName("Register"), ValidateAntiForgeryToken]
-    public async Task<IActionResult> RegisterPost(User user)
+    public async Task<IActionResult> Register(User user)
     {
         if (ModelState.IsValid)
         {
@@ -112,11 +118,7 @@ public class AccountController : Controller
     }
 
 
-
-
-
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true),]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

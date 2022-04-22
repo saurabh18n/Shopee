@@ -35,8 +35,10 @@ namespace Shopee
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
 
+            #region User
 
             modelBuilder.Entity<User>().Property(u => u.Id).HasDefaultValue(Guid.NewGuid());
+            modelBuilder.Entity<User>().Property(u => u.IsActive).HasDefaultValue(true);
             modelBuilder.Entity<User>().HasData(new User()
             {
                 Id = Guid.NewGuid(),
@@ -49,11 +51,25 @@ namespace Shopee
                 ContactNumber = "0000000",
                 Email = "admin@local.com"
             });
+            #endregion
+
+            #region Product
+            modelBuilder.Entity<Product>().HasOne(prod => prod.AddedBy).WithMany().HasForeignKey(prod => prod.AddedById);
+
+            #endregion
+
+            #region ProductImeage
+            modelBuilder.Entity<ProductImages>().HasOne(img => img.Product).WithMany(prod => prod.Images).HasForeignKey(s => s.ProductId);
+            #endregion
 
             OnModelCreatingPartial(modelBuilder);
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<ProductImages> ProductImages { get; set; }
+        public DbSet<Product> Products { get; set; }
+
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
     }

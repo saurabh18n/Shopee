@@ -1,0 +1,35 @@
+@using Shopee.Models
+@model List<Shopee.Models.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Description
+        </th>
+
+    </tr>
+    @foreach (Product item in ViewBag.Products)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Desc</td>
+            <td>@item.StoreQty</td>
+            <td>@item.UnitPrice</td>
+            <td>@item.specification</td>
+        </tr>
+    }
+</table>

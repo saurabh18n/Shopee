@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopee;
 
@@ -10,9 +11,10 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220422051629_product_productimages")]
+    partial class product_productimages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace Shopee.Migrations
 
                     b.HasIndex("AddedById");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Shopee.Models.ProductImages", b =>
@@ -84,7 +86,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("2b146721-aac6-4942-81c2-1610f75277e6"));
+                        .HasDefaultValue(new Guid("bf394a3d-7a60-42e0-90a5-ec487ce72fae"));
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -129,7 +131,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f29d4c92-48e4-4001-8e4f-43f53e70644f"),
+                            Id = new Guid("e885486d-4295-4500-a427-ee402772629b"),
                             ContactNumber = "0000000",
                             Email = "admin@local.com",
                             FirstName = "Admin",

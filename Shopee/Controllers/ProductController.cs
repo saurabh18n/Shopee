@@ -1,33 +1,86 @@
 using System.Diagnostics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shopee.Models;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shopee.Controllers;
 
 public class ProductController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private AppDbContext _db;
 
-    public ProductController(ILogger<HomeController> logger)
+    public ProductController(ILogger<HomeController> logger, AppDbContext appDbContext)
     {
+        _db = appDbContext;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
+    {
+        ViewBag.Products = _db.Products.Include(p => p.Images).ToList().Take(10);
+        return View();
+    }
+
+    public async Task<IActionResult> Product(Guid Id)
+    {
+        Product? prod = _db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == Id);
+        if (prod != null)
+        {
+            ViewBag.Product = prod;
+            return View();
+        }
+        else
+        {
+            ViewBag.Alert = "Invalid Product";
+            return View();
+
+        }
+    }
+
+    [Authorize(Roles = "Administrator")]
+    public IActionResult Create()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [Authorize(Roles = "Administrator"), HttpPost]
+    public async Task<IActionResult> Create(Product prod, IFormFile mainimage, List<IFormFile> ImageFiles)
     {
-        return View();
+        prod.AddedById = new Guid(User.Claims.First(c => c.Type == "Id").Value);
+        _db.Products.Add(prod);
+        foreach (var imageFile in ImageFiles)
+        {
+            ProductImages pd = new ProductImages()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = prod.Id
+            };
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.CopyToAsync(memoryStream);
+                if (memoryStream.Length < 2097152)
+                {
+                    pd.Image = memoryStream.ToArray();
+                }
+            }
+            _db.ProductImages.Add(pd);
+        }
+        await _db.SaveChangesAsync();
+        return RedirectToAction("ManageProducts");
     }
 
-    public IActionResult About()
+
+    public async Task<IActionResult> ManageProducts()
     {
+        ViewBag.Products = _db.Products.ToList().Take(10);
         return View();
     }
-
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
