@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnlineShoppingWebApp.Models;
+namespace Shopee.Models;
 
 public class Product
 {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj": {}
+    "D:\\DRDO\\Day 5\\ECom\\Shopee\\Shopee.csproj": {}
   },
   "projects": {
-    "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj": {
+    "D:\\DRDO\\Day 5\\ECom\\Shopee\\Shopee.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj",
+        "projectUniqueName": "D:\\DRDO\\Day 5\\ECom\\Shopee\\Shopee.csproj",
         "projectName": "Shopee",
-        "projectPath": "D:\\DRDO\\Day 4\\ECom\\Shopee\\Shopee.csproj",
+        "projectPath": "D:\\DRDO\\Day 5\\ECom\\Shopee\\Shopee.csproj",
         "packagesPath": "C:\\Users\\itadmin\\.nuget\\packages\\",
-        "outputPath": "D:\\DRDO\\Day 4\\ECom\\Shopee\\obj\\",
+        "outputPath": "D:\\DRDO\\Day 5\\ECom\\Shopee\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\itadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",

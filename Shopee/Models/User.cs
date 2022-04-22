@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnlineShoppingWebApp.Models;
+namespace Shopee.Models;
 
 public class User
 {

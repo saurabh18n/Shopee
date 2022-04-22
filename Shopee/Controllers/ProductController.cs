@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShoppingWebApp.Models;
+using Shopee.Models;
 
-namespace OnlineShoppingWebApp.Controllers;
+namespace Shopee.Controllers;
 
 public class ProductController : Controller
 {

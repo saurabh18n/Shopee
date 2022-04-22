@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l4+JpbwAOzd4mWvjzFIyfxZJro3GgPIJyQT+QWSW8rNONrjAc0PSIkMCHwG1gwYLG3fS8s3NwgPWOqLIk6JcMw==",
+  "dgSpecHash": "U46t0Hbi9YRchYiwHc07WBDJwutJDaoYeqDzYqMQfdbZpRKLL26Ucl4lGDtTb67sEk81RIneyONWm5bj3MoxDw==",
   "success": true,
-  "projectFilePath": "D:\\DRDO\\Day 4\\ECom\\OnlineShoppingWebApp\\OnlineShoppingWebApp.csproj",
+  "projectFilePath": "D:\\DRDO\\Day 5\\ECom\\Shopee\\Shopee.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\itadmin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\itadmin\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
