@@ -23,13 +23,13 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Products = _db.Products.Include(p => p.Images).ToList().Take(10);
+        ViewBag.Products = await _db.Products.Include(p => p.Images).Take(10).ToListAsync();
         return View();
     }
 
     public async Task<IActionResult> Product(Guid Id)
     {
-        Product? prod = _db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == Id);
+        Product? prod = await _db.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == Id);
         if (prod != null)
         {
             ViewBag.Product = prod;
@@ -78,7 +78,7 @@ public class ProductController : Controller
 
     public async Task<IActionResult> ManageProducts()
     {
-        ViewBag.Products = _db.Products.ToList().Take(10);
+        ViewBag.Products = await _db.Products.Take(10).ToListAsync();
         return View();
     }
 

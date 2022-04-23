@@ -62,13 +62,25 @@ namespace Shopee
             modelBuilder.Entity<ProductImages>().HasOne(img => img.Product).WithMany(prod => prod.Images).HasForeignKey(s => s.ProductId);
             #endregion
 
+            #region ProductCategory
+            modelBuilder.Entity<ProductCate>().Property(Cat => Cat.Id).HasDefaultValue(Guid.NewGuid());
+            modelBuilder.Entity<ProductCate>().HasData(new ProductCate()
+            {
+                Id = Guid.NewGuid(),
+                Category = "All",
+                ParentId = null
+            });
+            #endregion
             OnModelCreatingPartial(modelBuilder);
         }
 
         public DbSet<User> Users { get; set; }
+
         public DbSet<ProductImages> ProductImages { get; set; }
+
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ProductCate> Categories { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

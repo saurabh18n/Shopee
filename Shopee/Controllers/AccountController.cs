@@ -71,12 +71,12 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
         if (loginUser.IsAdmin)
         {
-            return Redirect(Url.Action("index", "admin"));
+            return Redirect(Url.Action("index", "admin") ?? "/");
 
         }
         else
         {
-            return Redirect(Url.Action("index", "home"));
+            return Redirect(Url.Action("index", "home") ?? "/");
 
         }
     }
@@ -85,7 +85,7 @@ public class AccountController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
-        return Redirect(Url.Action("index", "home"));
+        return Redirect(Url.Action("index", "home") ?? "/");
     }
 
     public IActionResult Register()
