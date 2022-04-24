@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopee;
 
@@ -10,9 +11,10 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220423205701_cat_data")]
+    partial class cat_data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,31 +24,6 @@ namespace Shopee.Migrations
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
 
-            modelBuilder.Entity("Shopee.CartItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("c93fd5f9-550b-4056-81db-fc3ad783597e"));
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("Shopee.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -54,9 +31,6 @@ namespace Shopee.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("AddedById")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("CategoryId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Desc")
@@ -84,8 +58,6 @@ namespace Shopee.Migrations
 
                     b.HasIndex("AddedById");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
                 });
 
@@ -94,7 +66,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("dbabe799-598e-40ba-b50a-9855b8c0ac3b"));
+                        .HasDefaultValue(new Guid("7949a5cd-eb9c-47b4-a8d2-32a6f289acda"));
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -112,7 +84,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a0b487f0-73ec-404e-b222-cce4eef56aee"),
+                            Id = new Guid("d8317a85-f44b-4032-87b3-9274dfe966d3"),
                             Category = "All"
                         });
                 });
@@ -142,7 +114,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("800ee0db-d79c-48a7-bbb0-45ce2c9a3712"));
+                        .HasDefaultValue(new Guid("62be2562-8e66-4877-9fdb-3d5ce806caa9"));
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -187,7 +159,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2e06de33-2ffc-4603-8963-4bdcd95ecd53"),
+                            Id = new Guid("1f25c415-5efd-4f7e-bc1e-ed9350e336c1"),
                             ContactNumber = "0000000",
                             Email = "admin@local.com",
                             FirstName = "Admin",
@@ -200,25 +172,6 @@ namespace Shopee.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Shopee.CartItem", b =>
-                {
-                    b.HasOne("Shopee.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shopee.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Shopee.Models.Product", b =>
                 {
                     b.HasOne("Shopee.Models.User", "AddedBy")
@@ -227,15 +180,7 @@ namespace Shopee.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopee.Models.ProductCate", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("AddedBy");
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Shopee.Models.ProductCate", b =>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -33,19 +33,36 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Product
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-action="ManageProducts"
+                                        asp-controller="Product">List</a></li>
+                                <li><a class="dropdown-item" asp-action="Create" asp-controller="Product">Add</a></li>
+                                @* <li><a class="dropdown-item" href="#">Another action</a></li> *@
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                @* <li><a class="dropdown-item" href="#">Something else here</a></li> *@
+                            </ul>
+                        </li>
+
                     </ul>
-                    <form class="d-flex">
+                    <div class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    </form>
+                    </div>
                     <ul class="navbar-nav">
-                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        @if ((User != null) && User.Identity.IsAuthenticated)
                         {
                             ;
                             ;
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                    Hello @(User?.FindFirst(c=> c.Type=="FName")?.Value ?? "")
+                                    Hello @User.FindFirst(c=> c.Type=="FullName").Value;
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
                                     <li><a class="dropdown-item" href="#">Action</a></li>

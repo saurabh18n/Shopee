@@ -55,6 +55,7 @@ namespace Shopee
 
             #region Product
             modelBuilder.Entity<Product>().HasOne(prod => prod.AddedBy).WithMany().HasForeignKey(prod => prod.AddedById);
+            modelBuilder.Entity<Product>().HasOne(prod => prod.Category).WithMany().HasForeignKey(prod => prod.CategoryId);
 
             #endregion
 
@@ -64,6 +65,7 @@ namespace Shopee
 
             #region ProductCategory
             modelBuilder.Entity<ProductCate>().Property(Cat => Cat.Id).HasDefaultValue(Guid.NewGuid());
+            modelBuilder.Entity<ProductCate>().HasOne(cat => cat.ParentCat).WithMany().HasForeignKey(cat => cat.ParentId);
             modelBuilder.Entity<ProductCate>().HasData(new ProductCate()
             {
                 Id = Guid.NewGuid(),
@@ -71,6 +73,14 @@ namespace Shopee
                 ParentId = null
             });
             #endregion
+
+            #region CartItem
+            modelBuilder.Entity<CartItem>().Property(cart => cart.Id).HasDefaultValue(Guid.NewGuid());
+            modelBuilder.Entity<CartItem>().HasOne(cart => cart.User).WithMany().HasForeignKey(cart => cart.UserId);
+            modelBuilder.Entity<CartItem>().HasOne(cart => cart.Product).WithMany().HasForeignKey(cart => cart.ProductId);
+            #endregion
+
+
             OnModelCreatingPartial(modelBuilder);
         }
 
@@ -81,6 +91,8 @@ namespace Shopee
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductCate> Categories { get; set; }
+
+        public DbSet<CartItem> CartItems { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

@@ -8,8 +8,8 @@ using Shopee.Models;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
-namespace Shopee.Controllers;
 
+namespace Shopee.Controllers;
 public class ProductController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -44,35 +44,46 @@ public class ProductController : Controller
     }
 
     [Authorize(Roles = "Administrator")]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        var categories = await _db.Categories.ToListAsync();
+        ViewBag.Categories = categories;
         return View();
     }
 
     [Authorize(Roles = "Administrator"), HttpPost]
     public async Task<IActionResult> Create(Product prod, IFormFile mainimage, List<IFormFile> ImageFiles)
     {
-        prod.AddedById = new Guid(User.Claims.First(c => c.Type == "Id").Value);
-        _db.Products.Add(prod);
-        foreach (var imageFile in ImageFiles)
+        if (User?.Identity?.IsAuthenticated ?? false)
         {
-            ProductImages pd = new ProductImages()
+            prod.AddedById = Guid.Parse(User?.Identity?.Name ?? (new Guid()).ToString());
+            _db.Products.Add(prod);
+            foreach (var imageFile in ImageFiles)
             {
-                Id = Guid.NewGuid(),
-                ProductId = prod.Id
-            };
-            using (var memoryStream = new MemoryStream())
-            {
-                await imageFile.CopyToAsync(memoryStream);
-                if (memoryStream.Length < 2097152)
+                ProductImages pd = new ProductImages()
                 {
-                    pd.Image = memoryStream.ToArray();
+                    Id = Guid.NewGuid(),
+                    ProductId = prod.Id
+                };
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageFile.CopyToAsync(memoryStream);
+                    if (memoryStream.Length < 2097152)
+                    {
+                        pd.Image = memoryStream.ToArray();
+                    }
                 }
+                _db.ProductImages.Add(pd);
             }
-            _db.ProductImages.Add(pd);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("ManageProducts");
+
         }
-        await _db.SaveChangesAsync();
-        return RedirectToAction("ManageProducts");
+        else
+        {
+            return RedirectToAction(controllerName: "Account", actionName: "Login");
+        }
+
     }
 
 

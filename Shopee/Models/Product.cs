@@ -28,6 +28,10 @@ public class Product
     [Required, DataType(DataType.MultilineText), Display(Name = "Specification")]
     public string specification { get; set; }
 
+    [Required, Display(Name = "Category")]
+    public Guid CategoryId { get; set; }
+    public virtual ProductCate Category { get; set; }
+
     public Guid AddedById { get; set; }
     public User AddedBy { get; set; }
 }

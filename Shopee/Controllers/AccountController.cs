@@ -45,11 +45,9 @@ public class AccountController : Controller
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, loginUser.Username),
-            new Claim(ClaimTypes.PrimarySid, loginUser.Username),
-
-            new Claim("FullName", loginUser.FirstName + " " + loginUser.LastName),
-            new Claim("Id",loginUser.Id.ToString())
+            new Claim(ClaimTypes.Name, loginUser.Id.ToString()),
+            new Claim("FName", loginUser.FirstName),
+            new Claim("LName", loginUser.LastName),
         };
         if (loginUser.IsAdmin)
         {
