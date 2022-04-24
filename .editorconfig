@@ -1,3 +1,6 @@
+root = true
+
+
 [*.cs]
 # CS8618: Non nullable field _name is not initialized. Consider declare the field as nullable type
 dotnet_diagnostic.CS8618.severity = none;
@@ -5,4 +8,8 @@ dotnet_diagnostic.CS8618.severity = none;
 [*.cshtml]
 # ssomething
 dotnet_diagnostic.CS8602.severity = none;
+
+
+
+
 
