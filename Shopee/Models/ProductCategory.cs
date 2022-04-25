@@ -8,5 +8,5 @@ public class ProductCategory
     public Guid Id { get; set; }
     public string Category { get; set; }
     public Guid? ParentId { get; set; }
-    public virtual ProductCategory ParentCat { get; set; }
+    public virtual ProductCategory ParentCategory { get; set; }
 }

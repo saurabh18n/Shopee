@@ -4,18 +4,19 @@
 }
 @{
     Product prod = ViewBag.Product;
+    
 
 }
 
 <div class="row px-2">
     <div class="col-sm-12 col-md-4">
         <div id="a@{@prod.Id.ToString().Replace("-","");}" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
+            <div class="carousel-inner" style="height:400px; width:auto">
                 @foreach (var iitem in prod.Images.Select((value, index) => new { value, index }))
                 {
                     <div class="carousel-item @(iitem.index == 0 ?"active":"")">
-                        <img class="d-block w-100" src="data:image/png;base64,@Convert.ToBase64String(iitem.value.Image)"
-                        style="height:400px; width:100%">
+                        <img class="d-block img-fluid mx-auto"
+                        src="data:image/png;base64,@Convert.ToBase64String(iitem.value.Image)">
                     </div>
                 }
             </div>
@@ -30,7 +31,6 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
     </div>
     <div class="col-sm-12 col-md-8">
         <h5 class="">@prod.Title</h5>

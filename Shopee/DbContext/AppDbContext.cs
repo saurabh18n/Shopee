@@ -65,11 +65,41 @@ namespace Shopee
 
             #region ProductCategory
             modelBuilder.Entity<ProductCategory>().Property(Cat => Cat.Id).HasDefaultValue(Guid.NewGuid());
-            modelBuilder.Entity<ProductCategory>().HasOne(cat => cat.ParentCat).WithMany().HasForeignKey(cat => cat.ParentId);
+            modelBuilder.Entity<ProductCategory>().HasOne(cat => cat.ParentCategory).WithMany().HasForeignKey(cat => cat.ParentId);
             modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
             {
                 Id = Guid.NewGuid(),
                 Category = "All",
+                ParentId = null
+            });
+            modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
+            {
+                Id = Guid.NewGuid(),
+                Category = "Electronics",
+                ParentId = null
+            });
+            modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
+            {
+                Id = Guid.NewGuid(),
+                Category = "Mobile",
+                ParentId = null
+            });
+            modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
+            {
+                Id = Guid.NewGuid(),
+                Category = "TV",
+                ParentId = null
+            });
+            modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
+            {
+                Id = Guid.NewGuid(),
+                Category = "Fession",
+                ParentId = null
+            });
+            modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
+            {
+                Id = Guid.NewGuid(),
+                Category = "Household",
                 ParentId = null
             });
             #endregion

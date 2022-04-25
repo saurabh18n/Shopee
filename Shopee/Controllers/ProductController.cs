@@ -21,6 +21,8 @@ public class ProductController : Controller
         _logger = logger;
     }
 
+
+
     public async Task<IActionResult> Index()
     {
         ViewBag.Products = await _db.Products.Include(p => p.Images).Take(10).ToListAsync();
@@ -43,7 +45,7 @@ public class ProductController : Controller
         }
     }
 
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Create()
     {
         var categories = await _db.Categories.ToListAsync();
@@ -51,7 +53,7 @@ public class ProductController : Controller
         return View();
     }
 
-    [Authorize(Roles = "Administrator"), HttpPost]
+    [Authorize(Roles = Roles.Admin), HttpPost]
     public async Task<IActionResult> Create(Product prod, IFormFile mainimage, List<IFormFile> ImageFiles)
     {
         if (User?.Identity?.IsAuthenticated ?? false)
@@ -96,6 +98,9 @@ public class ProductController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        var timer = new  System.Timers.Timer(2000);
+        timer.AutoReset = true;
+        timer.Elapsed +=
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

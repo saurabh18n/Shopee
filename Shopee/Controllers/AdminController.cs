@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shopee.Models;
 
 namespace Shopee.Controllers;
-[Authorize(Roles = "Administrator")]
+[Authorize(Roles = Roles.Admin)]
 public class AdminController : Controller
 {
     private readonly ILogger<AdminController> _logger;
