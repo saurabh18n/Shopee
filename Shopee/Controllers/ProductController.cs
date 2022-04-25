@@ -98,9 +98,8 @@ public class ProductController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        var timer = new  System.Timers.Timer(2000);
-        timer.AutoReset = true;
-        timer.Elapsed +=
+
+
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
