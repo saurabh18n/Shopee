@@ -24,10 +24,11 @@
 
 <body style="background-color: #E5F3E7;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav
+            class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 py-1">
             <div class="container-fluid">
-                <a class="navbar-brand gred-text px-3" asp-area="" asp-controller="Home" asp-action="Index"
-                    style="font-family: 'Ms Madi', cursive;font-size:30pt;font-weight:bolder">Shoopee</a>
+                <a class="navbar-brand gred-text px-3 py-0" asp-area="" asp-controller="Home" asp-action="Index"
+                    style="font-family: 'Ms Madi', cursive;font-size:20pt;font-weight:bolder">Shoopee</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -45,7 +46,6 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                     Hello @(User?.FindFirst(c=> c.Type=="FName")?.Value ?? "")
-                                    <i class="bi-alarm"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
                                     <li><a class="dropdown-item" href="#">Action</a></li>
@@ -58,12 +58,20 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="nav-item mx-2">
+                                <a type="button" class="btn btn-outline-success" asp-action="checkout"
+                                asp-controller="order">
+                                    <i class="bi bi-cart3"></i>
+                                </a>
+                            </li>
                         }
                         else
                         {
                             <a class="form-control btn btn-primary" asp-controller="Account" asp-action="Login">Login</a>
 
                         }
+
+
                     </ul>
                 </div>
             </div>

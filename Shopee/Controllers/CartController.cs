@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Shopee
 {
     [ApiController]
-    public class CartController : ControllerBase
+    public class CartController : Controller
     {
         private readonly AppDbContext _context;
 
@@ -23,10 +23,11 @@ namespace Shopee
 
         // GET: api/Cart
         [HttpGet, Authorize, Route("/Cart")]
-        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems()
+        public async Task<IActionResult> Index()
         {
-            Guid userId = Guid.Parse(User.Identity.Name);
-            return await _context.CartItems.Where(CI => CI.UserId == userId).ToListAsync();
+            Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
+            ViewBag.CartItems = await _context.CartItems.Where(CI => CI.UserId == userId).ToListAsync();
+            return View();
         }
 
 

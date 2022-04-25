@@ -9,6 +9,10 @@ dotnet_diagnostic.CS8618.severity = none;
 # ssomething
 dotnet_diagnostic.CS8602.severity = none;
 
+[**/*.cshtml__virtual.html]
+dotnet_diagnostic.All.severity = none;
+
+
 
 
 

@@ -23,10 +23,11 @@
 
 <body style="background-color: #E5F3E7;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav
+            class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 py-1">
             <div class="container-fluid">
                 <a class="navbar-brand gred-text px-3" asp-area="" asp-controller="Home" asp-action="Index"
-                    style="font-family: 'Ms Madi', cursive;font-size:30pt;font-weight:bolder">Shoopee</a>
+                    style="font-family: 'Ms Madi', cursive;font-size:20pt;font-weight:bolder">Shoopee</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -50,19 +51,31 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Categories
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Category">List</a></li>
+                                <li><a class="dropdown-item" asp-action="Add" asp-controller="Category">Add</a></li>
+
+                            </ul>
+                        </li>
+
                     </ul>
                     <div class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     </div>
                     <ul class="navbar-nav">
-                        @if ((User != null) && User.Identity.IsAuthenticated)
+                        @if ((User != null) && (User?.Identity?.IsAuthenticated ?? false))
                         {
                             ;
                             ;
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                    Hello @User.FindFirst(c=> c.Type=="FullName").Value;
+                                    @User?.FindFirst(c=> c.Type=="FName")?.Value
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
                                     <li><a class="dropdown-item" href="#">Action</a></li>

@@ -1,5 +1,4 @@
-using Shopee.Models;
-namespace Shopee;
+namespace Shopee.Models;
 public class CartItem
 {
     public Guid Id { get; set; }

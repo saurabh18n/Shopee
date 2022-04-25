@@ -51,12 +51,12 @@ public class AccountController : Controller
         };
         if (loginUser.IsAdmin)
         {
-            claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
-            claims.Add(new Claim(ClaimTypes.Role, "User"));
+            claims.Add(new Claim(ClaimTypes.Role, Roles.Admin));
+            claims.Add(new Claim(ClaimTypes.Role, Roles.User));
         }
         else
         {
-            claims.Add(new Claim(ClaimTypes.Role, "User"));
+            claims.Add(new Claim(ClaimTypes.Role, Roles.User));
         }
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);

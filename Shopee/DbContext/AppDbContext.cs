@@ -64,9 +64,9 @@ namespace Shopee
             #endregion
 
             #region ProductCategory
-            modelBuilder.Entity<ProductCate>().Property(Cat => Cat.Id).HasDefaultValue(Guid.NewGuid());
-            modelBuilder.Entity<ProductCate>().HasOne(cat => cat.ParentCat).WithMany().HasForeignKey(cat => cat.ParentId);
-            modelBuilder.Entity<ProductCate>().HasData(new ProductCate()
+            modelBuilder.Entity<ProductCategory>().Property(Cat => Cat.Id).HasDefaultValue(Guid.NewGuid());
+            modelBuilder.Entity<ProductCategory>().HasOne(cat => cat.ParentCat).WithMany().HasForeignKey(cat => cat.ParentId);
+            modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
             {
                 Id = Guid.NewGuid(),
                 Category = "All",
@@ -90,7 +90,7 @@ namespace Shopee
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<ProductCate> Categories { get; set; }
+        public DbSet<ProductCategory> Categories { get; set; }
 
         public DbSet<CartItem> CartItems { get; set; }
 

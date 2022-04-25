@@ -1,0 +1,33 @@
+@model List<Shopee.Models.ProductCategory>
+@{
+    ViewData["Title"] = "Categories";
+}
+<table class="table">
+    <tr>
+        <th class="d-none">
+            Id
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Parent Category
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @foreach (ProductCategory item in ViewBag.Categories)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Category</td>
+            <td>@item.ParentCat.Category</td>
+            <td>
+                <button class="btn btn primary">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+            </td>
+        </tr>
+    }
+</table>

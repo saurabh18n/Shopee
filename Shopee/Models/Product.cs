@@ -30,7 +30,7 @@ public class Product
 
     [Required, Display(Name = "Category")]
     public Guid CategoryId { get; set; }
-    public virtual ProductCate Category { get; set; }
+    public virtual ProductCategory Category { get; set; }
 
     public Guid AddedById { get; set; }
     public User AddedBy { get; set; }
