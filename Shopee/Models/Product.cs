@@ -23,7 +23,7 @@ public class Product
     public List<ProductImages> Images { get; set; }
 
     [Required, Display(Name = "Tax rate")]
-    public decimal tax { get; set; }
+    public float tax { get; set; }
 
     [Required, DataType(DataType.MultilineText), Display(Name = "Specification")]
     public string specification { get; set; }

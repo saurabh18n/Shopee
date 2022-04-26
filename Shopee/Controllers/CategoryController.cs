@@ -28,8 +28,10 @@ public class CategoryController : Controller
     [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Add()
     {
-        ViewBag.ParentCategories = new SelectList(await _dbContext.Categories.Where(c => c.ParentId == null)
-           .ToDictionaryAsync(c => c.Id, c => c.Category), "Key", "Value");
+        List<ProductCategory> categoryList = new List<ProductCategory>();
+        categoryList.Add(new ProductCategory() { Id = Guid.Empty, Category = "Root", ParentId = null });
+        categoryList.AddRange(await _dbContext.Categories.Where(c => c.ParentCategory.ParentId == null).ToListAsync());
+        ViewBag.ParentCategories = new SelectList(categoryList, "Id", "Category");
         return View();
     }
 
@@ -43,7 +45,7 @@ public class CategoryController : Controller
             _dbContext.Categories.Add(new ProductCategory()
             {
                 Category = cat.Category,
-                ParentId = cat.ParentId
+                ParentId = cat.ParentId == Guid.Empty ? null : cat.ParentId,
             });
             await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");

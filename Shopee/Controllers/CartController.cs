@@ -26,8 +26,7 @@ namespace Shopee
         public async Task<IActionResult> Index()
         {
             Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
-            ViewBag.CartItems = await _context.CartItems.Where(CI => CI.UserId == userId).ToListAsync();
-            return View();
+            return View(await _context.CartItems.Where(CI => CI.UserId == userId).Include(ci => ci.Product).ToListAsync());
         }
 
 
@@ -56,7 +55,7 @@ namespace Shopee
 
         // DELETE: api/Cart/5
         [HttpDelete("{id}"), Authorize]
-        public async Task<IActionResult> DeleteCartItem(Guid id)
+        public async Task<IActionResult> Remove(Guid id)
         {
             var cartItem = await _context.CartItems.FindAsync(id);
             if (cartItem == null)
@@ -67,7 +66,7 @@ namespace Shopee
             _context.CartItems.Remove(cartItem);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CartItemExists(Guid id)

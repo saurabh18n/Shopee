@@ -101,13 +101,21 @@
         }
     }
     function addToCart() {
-        var productId = parseInt($('#addToCartButton').data('id'));
+        var productId = $('#addToCartButton').data('id');
         var Qty = parseInt($('#quantity').val());
         $.ajax({
-            url: `@Url.Action("cart","add")?ProdId=${productId}&quantity=${Qty}`,
-        }).done((res) => {
-            console.log(res);
-        });
+            url: `@Url.Action("add","cart")?ProdId=${productId}&quantity=${Qty}`,
+            success: (data) => {
+                showMessage("Item Added to cart successfully", "SUCCESS");
+            },
+            error: (err) => {
+                if (err.status === 401) {
+                    showMessage("Please Login to add items to Cart", "ERROR");
+                } else {
+                    showMessage("Something Went Wrong Please try after some time", "ERROR");
+                }
+            }
+        })
     }
 </script>
 }
