@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shopee.Models;
 
 namespace Shopee.Controllers;
@@ -7,13 +8,16 @@ namespace Shopee.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _db;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, AppDbContext ctx)
     {
+        _db = ctx;
         _logger = logger;
     }
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        ViewBag.NewProducts = await _db.Products.Take(10).Include(p => p.Images).ToListAsync();
         return View();
     }
 

@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shopee.Models;
+using System.Linq;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Shopee.Controllers;
 public class ProductController : Controller
@@ -21,21 +22,26 @@ public class ProductController : Controller
         _logger = logger;
     }
 
-
-
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index([FromQuery] string? Search, [FromQuery] float Max, [FromQuery] float Min, [FromQuery] string cat)
     {
-        ViewBag.Products = await _db.Products.Include(p => p.Images).Take(10).ToListAsync();
-        return View();
+        List<Product> Products = await _db.Products.Where(prod =>
+        (string.IsNullOrEmpty(Search) || (prod.Title.Contains(Search) && prod.Desc.Contains(Search))) &&
+        ((cat == "All" || string.IsNullOrEmpty(cat)) || (prod.Category.Category.Contains(Search))) &&
+        (Max == 0 || prod.UnitPrice <= Max) &&
+        (Min == 0 || prod.UnitPrice >= Min)
+       )
+       .Include(p => p.Images).Take(10)
+        .ToListAsync();
+        ViewBag.Categories = await _db.Categories.ToListAsync();
+        return View(Products);
     }
 
-    public async Task<IActionResult> Product(Guid Id)
+    public async Task<IActionResult> p(Guid Id)
     {
         Product? prod = await _db.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == Id);
         if (prod != null)
         {
-            ViewBag.Product = prod;
-            return View();
+            return View(prod);
         }
         else
         {
@@ -91,15 +97,15 @@ public class ProductController : Controller
 
     public async Task<IActionResult> ManageProducts()
     {
-        ViewBag.Products = await _db.Products.Take(10).ToListAsync();
-        return View();
+        List<Product> prod = await _db.Products
+        .Include(p => p.Category).ThenInclude(p => p.ParentCategory)
+        .Take(10).ToListAsync();
+        return View(prod);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-
-
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

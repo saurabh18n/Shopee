@@ -3,8 +3,14 @@
 @{
     ViewData["Title"] = "Products";
 }
-<table class="table">
+<table class="table table-border">
     <tr>
+        <th>
+            Category
+        </th>
+        <th>
+            Sub Category
+        </th>
         <th>
             Title
         </th>
@@ -22,9 +28,12 @@
         </th>
 
     </tr>
-    @foreach (Product item in ViewBag.Products)
+    @foreach (Product item in Model)
     {
         <tr>
+            <td>@(item.Category?.ParentCategory?.Category ?? "-")</td>
+            <td>@item.Category?.Category</td>
+            <td>@item.Title</td>
             <td>@item.Title</td>
             <td>@item.Desc</td>
             <td>@item.StoreQty</td>

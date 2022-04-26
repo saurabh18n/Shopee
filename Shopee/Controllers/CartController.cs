@@ -32,13 +32,26 @@ namespace Shopee
 
 
 
-        [HttpPost, Authorize, Route("/Cart")]
-        public async Task<ActionResult<CartItem>> PostCartItem(CartItem cartItem)
+        [Authorize, Route("/cart/add")]
+        public async Task<ActionResult<CartItem>> add(Guid ProdId, int quantity)
         {
-            _context.CartItems.Add(cartItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCartItem", new { id = cartItem.Id }, cartItem);
+            if (ProdId != Guid.Empty && quantity > 0)
+            {
+                Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
+                _context.CartItems.Add(new CartItem
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    ProductId = ProdId,
+                    Quantity = quantity
+                });
+                await _context.SaveChangesAsync();
+                return Ok(new { success = true, message = "Successfully Added Item To Cart" });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE: api/Cart/5
