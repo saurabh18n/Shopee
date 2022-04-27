@@ -6,46 +6,58 @@
 
     <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
         <h6>Your Cart</h6>
-        <table class="table table-sm table-striped table-bordered">
-            <tr>
-                <th>Item Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Tax</th>
-                <th>Amount</th>
-                <td></td>
-            </tr>
-            @{
-                double total = 0;
-                double TotalTax = 0;
-            }
-            @foreach (CartItem item in Model)
-            {
+        <div class="row">
+            <table class="table table-sm table-striped table-bordered">
                 <tr>
-                    <td>@item.Product.Title</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.Product.UnitPrice</td>
-                    @{
-                        double itemTotal = item.Quantity * item.Product.UnitPrice;
-                        double itemTax = (itemTotal * item.Product.tax) / 100;
-                        total += (itemTax + itemTotal);
-                        TotalTax += itemTax;
-                    }
-                    <td>@itemTax </td>
-                    <td>@(itemTotal+itemTax)</td>
-                    <td>
-                        <a class="btn btn-danger" asp-controller="cart" asp-action="Remove" asp-route-Id="@item.Id">
-                            <i class="bi bi-trash-fill"></i>
-                        </a>
-                    </td>
+                    <th></th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Tax</th>
+                    <th>Total</th>
                 </tr>
-            }
-            <tr>
-                <th colspan="3"></th>
-                <th>Total</th>
-                <th>@total</th>
-            </tr>
+                @{
+                    double total = 0;
+                    double TotalTax = 0;
+                }
+                @foreach (CartItem item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-danger" asp-action="Remove" asp-route-id="@item.Id">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                        <td>@item.Product.Title</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Product.UnitPrice</td>
+                        @{
+                            double itemTotal = item.Quantity * item.Product.UnitPrice;
+                            double itemTax = (itemTotal * item.Product.tax) / 100;
+                            total += (itemTax + itemTotal);
+                            TotalTax += itemTax;
+                        }
+                        <td>@itemTotal </td>
+                        <td>@itemTax </td>
+                        <td>@(itemTotal+itemTax)</td>
 
-        </table>
+                    </tr>
+                }
+                <tr>
+                    <th colspan="6" class="text-end">
+                        <p>Total</p>
+                    </th>
+                    <th>@total</th>
+                </tr>
+            </table>
+        </div>
+        <div class="row flex-row flex-row-reverse ">
+            <a class="btn btn-primary mx-2 my-2 @(Model.Count>0?"":"disabled")"
+                style="width: 120px;pointer-events:@(Model.Count>0?"all":"none")" asp-action="checkout"
+                asp-controller="order">Checkout</a>
+            <a class="btn btn-danger mx-2 my-2 @(Model.Count>0?"":"disabled")" style="width: 120px;"
+                asp-action="reset">Reset</a>
+        </div>
     </div>
 </div>

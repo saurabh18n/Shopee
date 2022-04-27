@@ -1,0 +1,17 @@
+@model Shopee.Models.User
+
+@{
+    ViewData["Title"] = "Success";
+}
+@if (@Model != null)
+{
+    <div class="row justify-content-center align-content-center" style="height:80vh">
+        <div class="col col-sm-12 col-md-8 col-lg-8 col-xl-8 p-3">
+            <div class="d-flex flex-column">
+                <h5>Hello @Model.FirstName @Model.LastName Your accoune is successfully registered. Please <a
+                    asp-action="login" asp-controller="account">Login</a> to
+                    continue.</h5>
+            </div>
+        </div>
+    </div>
+}

@@ -19,13 +19,6 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddDbContext<AppDbContext>();
 
-
-
-
-
-
-
-
 var app = builder.Build();
 
 

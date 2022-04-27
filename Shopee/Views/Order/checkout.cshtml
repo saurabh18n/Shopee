@@ -1,0 +1,154 @@
+@model List<Shopee.Models.CartItem>
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+@section Styles{
+<style>
+    .section-legend {
+        position: relative;
+        top: -26px;
+        font-size: 1.2rem;
+        opacity: 1;
+        color: var(--bs-blue);
+        margin-bottom: -13px;
+    }
+</style>
+}
+<div class="row justify-content-center align-content-cente">
+    <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+        <div class="row border my-3 py-2">
+            <legend class="section-legend">Items</legend>
+            <table class="table table-sm table-striped table-bordered">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Tax</th>
+                    <th>Total</th>
+                </tr>
+                @{
+                    double total = 0;
+                    double TotalTax = 0;
+                }
+                @foreach (CartItem item in Model)
+                {
+                    <tr>
+                        <td>@item.Product.Title</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Product.UnitPrice</td>
+                        @{
+                            double itemTotal = item.Quantity * item.Product.UnitPrice;
+                            double itemTax = (itemTotal * item.Product.tax) / 100;
+                            total += (itemTax + itemTotal);
+                            TotalTax += itemTax;
+                        }
+                        <td>@itemTotal </td>
+                        <td>@itemTax </td>
+                        <td>@(itemTotal+itemTax)</td>
+
+                    </tr>
+                }
+                <tr>
+                    <th colspan="5" class="text-end">
+                        <p>Total</p>
+                    </th>
+                    <th>@total</th>
+                </tr>
+            </table>
+        </div>
+        <form>
+            <div class="row flex-row justify-content-between my-3 py-2 border">
+                <legend class="section-legend">Payment</legend>
+                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <label for="inputPassword2" class="col-12 col-form-label">Payment Method</label>
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                    <select class="form-select" id="payment" required>
+                        <option value="">Select Payment</option>
+                        <option value="CC">Credit Card</option>
+                        <option value="DC">Debit Card</option>
+                        <option value="NETB">Netbanking</option>
+                        <option value="UPI">UPI</option>
+                        <option value="COD">Cash On Delivery</option>
+                    </select>
+                </div>
+                <input type="hidden" name="payment">
+            </div>
+            <div class="d-none row flex-row justify-content-between my-3 py-2 border" id="paymentDetailscontainer">
+                <legend class="section-legend" id="detailLegend">Payment Details</legend>
+                <div class="col-12">
+                    <div class="row px-2 my-2">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <label name="payment-detail-1-label" for="payment-detail-1"
+                                class="col-12 col-form-label">Payment Method</label>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                            <input type="text" name="payment-detail-1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row px-2 my-2">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <label name="payment-detail-2-label" for="payment-detail-2"
+                                class="col-12 col-form-label">Payment Method</label>
+
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                            <input type="text" name="payment-detail-2" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row flex-row justify-content-between my-3 py-2 border">
+                <legend class="section-legend">Address</legend>
+                <div class="form-floating">
+                    <textarea class="form-control" id="address" rows="4" placeholder="m" style="height:150px;"
+                        required></textarea>
+                    <label class="ms-2" for="address">Address</label>
+                </div>
+            </div>
+
+            <div class="row flex-row flex-row-reverse">
+                <button type="submit" class="btn btn-primary mx-2 my-2 @(Model.Count>0?"":"disabled")"
+                    style="width: 120px;pointer-events:@(Model.Count>0?"all":"none")" asp-action="checkout"
+                    asp-controller="order">Place Order</button>
+                @* onclick="return validateOrder();" *@
+                <a class="btn btn-danger mx-2 my-2" style="width: 120px;" asp-action="index" asp-controller="cart">Back
+                    to Cart</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+    function validateOrder() {
+        console.log("validating");
+        return false
+    }
+
+    $('#payment').on(('change'), (event) => {
+        var paymentMethod = event.target.value
+        switch (paymentMethod) {
+            case "CC":
+
+
+                break;
+            case "DC":
+                break;
+            case "NETB":
+                break;
+            case "UPI":
+                break;
+            case "COD":
+                break;
+
+        }
+        $("#paymentDetailscontainer").removeClass('d-none');
+        $("#paymentDetailscontainer legend").text($(event.target).find(":selected").text() + ' Details')
+    })
+
+</script>
+}

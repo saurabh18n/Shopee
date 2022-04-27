@@ -100,12 +100,11 @@ public class AccountController : Controller
             user.IsAdmin = false;
             _DB.Users.Add(user);
             await _DB.SaveChangesAsync();
-            ViewBag.Alert = "Registered Successfully";
-            return View("~/Views/Home/Index.cshtml");
+            return View("success", user);
         }
         else
         {
-            ViewBag.ErrorMessage = "invalid Model";
+            ViewBag.ErrorMessage = "Please Fill all details";
         }
         return View();
     }

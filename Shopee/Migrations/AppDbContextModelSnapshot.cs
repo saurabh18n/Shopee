@@ -27,7 +27,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("e60660a6-b2b2-41d8-bb0b-de656030cf9d"));
+                        .HasDefaultValue(new Guid("dad58381-c4ee-4333-95df-7201c1947787"));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
@@ -94,7 +94,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("c1f02b0a-7649-49ca-a91d-73ff1e9177fa"));
+                        .HasDefaultValue(new Guid("0ecedf68-ff54-46f1-b41e-d66f4e53c8f2"));
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -112,32 +112,32 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cf0acdb8-10cf-4680-a7ec-3b021a41f38d"),
+                            Id = new Guid("91333293-e838-4682-b12c-398d9e845993"),
                             Category = "All"
                         },
                         new
                         {
-                            Id = new Guid("a5f6237f-adc0-497f-ad84-3fbd01da81f0"),
+                            Id = new Guid("4afd733a-9e6a-4106-95be-edb3fb6d02b1"),
                             Category = "Electronics"
                         },
                         new
                         {
-                            Id = new Guid("5935173e-43da-4c55-bc58-1ef5e053e0da"),
+                            Id = new Guid("80779bbf-ecaa-4086-9eed-8cbccc47eb2d"),
                             Category = "Mobile"
                         },
                         new
                         {
-                            Id = new Guid("f6a91c55-25d7-409d-988d-55d21f393985"),
+                            Id = new Guid("ce9a809e-86c2-448f-a748-04f4b15dc374"),
                             Category = "TV"
                         },
                         new
                         {
-                            Id = new Guid("ccf467bb-6696-45d4-875b-ce6659113897"),
+                            Id = new Guid("0982ad8b-71d6-46c0-ad14-0df2f24cc298"),
                             Category = "Fession"
                         },
                         new
                         {
-                            Id = new Guid("0e0a29de-2726-4a84-8d4e-1b82ac509a80"),
+                            Id = new Guid("ae7af2e9-93ad-4e21-8c6a-232f788db03b"),
                             Category = "Household"
                         });
                 });
@@ -167,7 +167,7 @@ namespace Shopee.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("bcfc7f84-a29c-41d1-8fd0-47a61f6f9500"));
+                        .HasDefaultValue(new Guid("559840c0-febf-4a4f-a79f-684c169236aa"));
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -212,7 +212,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4bdd3b61-70e6-4018-b217-3e0e9dc39fd8"),
+                            Id = new Guid("51e22454-71b0-45c3-b037-36d65d178385"),
                             ContactNumber = "0000000",
                             Email = "admin@local.com",
                             FirstName = "Admin",

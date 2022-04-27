@@ -105,7 +105,6 @@ namespace Shopee
             #endregion
 
             #region CartItem
-            modelBuilder.Entity<CartItem>().Property(cart => cart.Id).HasDefaultValue(Guid.NewGuid());
             modelBuilder.Entity<CartItem>().HasOne(cart => cart.User).WithMany().HasForeignKey(cart => cart.UserId);
             modelBuilder.Entity<CartItem>().HasOne(cart => cart.Product).WithMany().HasForeignKey(cart => cart.ProductId);
             #endregion

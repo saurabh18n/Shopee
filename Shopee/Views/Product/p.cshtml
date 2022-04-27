@@ -106,6 +106,7 @@
         $.ajax({
             url: `@Url.Action("add","cart")?ProdId=${productId}&quantity=${Qty}`,
             success: (data) => {
+                $('#cartCount').text(parseInt($('#cartCount').text()) + Qty)
                 showMessage("Item Added to cart successfully", "SUCCESS");
             },
             error: (err) => {

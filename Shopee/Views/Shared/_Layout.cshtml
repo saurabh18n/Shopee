@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Shopee.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrapicons/bootstrap-icons.css" />
+    @await RenderSectionAsync("Styles", required: false)
     <style>
         .gred-text {
             background: linear-gradient(to left top, #e66465, #9198e5);
@@ -62,7 +63,9 @@
                             <li class="nav-item mx-2">
                                 <a type="button" class="btn btn-outline-success" asp-action="index" asp-controller="cart">
                                     <i class="bi bi-cart3"></i>
+                                    <span id="cartCount">0</span>
                                 </a>
+
                             </li>
                         }
                         else
@@ -74,17 +77,13 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
-        <main role=" main" class="pb-3">
+    <div>
+        <div class="container-fluid">
             @RenderBody()
-        </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-        </div>
-    </footer>
-
+    </div>
     <partial name="~/Views/Partial/_model.cshtml" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -108,7 +107,7 @@
     }
     @if (@ViewBag.Alert != null)
     {
-        @:showMessage('@ViewBag.Alert')
+        @:showMessage('@ViewBag.Alert', '@ViewBag.AlertType')
     }
 </script>
 
