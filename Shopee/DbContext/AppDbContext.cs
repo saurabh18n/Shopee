@@ -27,6 +27,7 @@ namespace Shopee
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseMySql(Configuration["database"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.28-mysql"));
+                optionsBuilder.UseLoggerFactory(new LoggerFactory());
             }
         }
 
@@ -36,8 +37,6 @@ namespace Shopee
                 .HasCharSet("utf8mb4");
 
             #region User
-
-            modelBuilder.Entity<User>().Property(u => u.Id).HasDefaultValue(Guid.NewGuid());
             modelBuilder.Entity<User>().Property(u => u.IsActive).HasDefaultValue(true);
             modelBuilder.Entity<User>().HasData(new User()
             {
@@ -64,7 +63,6 @@ namespace Shopee
             #endregion
 
             #region ProductCategory
-            modelBuilder.Entity<ProductCategory>().Property(Cat => Cat.Id).HasDefaultValue(Guid.NewGuid());
             modelBuilder.Entity<ProductCategory>().HasOne(cat => cat.ParentCategory).WithMany().HasForeignKey(cat => cat.ParentId);
             modelBuilder.Entity<ProductCategory>().HasData(new ProductCategory()
             {
@@ -109,6 +107,13 @@ namespace Shopee
             modelBuilder.Entity<CartItem>().HasOne(cart => cart.Product).WithMany().HasForeignKey(cart => cart.ProductId);
             #endregion
 
+            #region Order
+            #endregion
+
+            #region Order
+            modelBuilder.Entity<OrderItem>().HasOne(oi => oi.Order).WithMany(o => o.Items).HasForeignKey(oi => oi.OrderId);
+            modelBuilder.Entity<OrderItem>()
+            #endregion
 
             OnModelCreatingPartial(modelBuilder);
         }
@@ -122,6 +127,9 @@ namespace Shopee
         public DbSet<ProductCategory> Categories { get; set; }
 
         public DbSet<CartItem> CartItems { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
