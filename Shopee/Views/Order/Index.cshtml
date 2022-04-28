@@ -4,21 +4,20 @@
 }
 <div class="row justify-content-center align-content-cente">
     <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-        @{string acid;}
+        @{int acid = 0;}
         @foreach (Order ord in Model)
         {
+            acid += 1;
             <div class="row my-2">
-                @{acid ="a"+ ord.Id.ToString().Replace("-","");}
-                    <div class="accordion" id="@acid">
+                <div class="accordion" id="a@(acid)">
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="h1@{@acid}}">
+                        <h2 class="accordion-header" id="h1@(acid)">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#c1@{@acid}" aria-expanded="true" aria-controls="c1@{@acid}">
                                 Order Summery
                             </button>
                         </h2>
-                        <div id="c1@{@acid}" class="accordion-collapse collapse show" aria-labelledby="h1@{@acid}}"
-                        data-bs-parent="#@acid">
+                            <div id="c1@(acid)" class="accordion-collapse collapse @(acid==1 ? "show":"")" aria-labelledby="h1@(acid)"  data-bs-parent="#a@(acid)"> 
                             <div class="accordion-body">
                                 <div class="progress" style="height: 30px;">
                                     @{
@@ -41,15 +40,15 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingTwo">
+                        <h2 class="accordion-header" id="h2@(acid)">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            data-bs-target="#c2@(acid)" aria-expanded="false" aria-controls="c2@(acid)">
                                 Items
                             </button>
                         </h2>
-                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                        data-bs-parent="#@acid">
+                        <div id="c2@(acid)" class="accordion-collapse collapse" aria-labelledby="h2@(acid)" data-bs-parent="#a@(acid)">
                             <div class="accordion-body">
                                 <div class="my-3">
                                     <p> Your Order for
@@ -60,15 +59,16 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            data-bs-target="#c3@(acid)" aria-expanded="false" aria-controls="c3@(acid)">
                                 Address
                             </button>
                         </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                        data-bs-parent="#@acid">
+                        <div id="c3@(acid)" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#c1@{@acid}">
                             <div class="accordion-body">
                                 <div class="my-3">
                                     <p> Your Order for
@@ -79,15 +79,16 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="h3@{@acid}">
+                        <h2 class="accordion-header" id="h4@(acid)">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            data-bs-target="#c4@(acid)" aria-expanded="false" aria-controls="c4@(acid)">
                                 Payment
                             </button>
                         </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="h3@{@acid}"
-                         data-bs-parent="#@acid">
+                        <div id="c4@(acid)" class="accordion-collapse collapse" aria-labelledby="h4@(acid)"
+                         data-bs-parent="#c1@{@acid}">
                             <div class="accordion-body">
                                 <table class="table">
                                     <tr>

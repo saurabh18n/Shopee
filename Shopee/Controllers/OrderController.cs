@@ -51,6 +51,29 @@ public class OrderController : Controller
         return View(await _db.CartItems.Where(CI => CI.UserId == userId).Include(ci => ci.Product).ToListAsync());
     }
 
+    //Administration
+
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> Manage()
+    {
+        return View(await _db.Orders.Include(o => o.Items).Include(o => o.OrderByUser).ToListAsync());
+    }
+
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> o([FromRoute] Guid Id)
+    {
+        Order? ord = await _db.Orders.Include(O => O.OrderByUser).Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == Id);
+        if (ord != null)
+        {
+            return View(ord);
+        }
+        else
+        {
+            return Ok("Order Not Found");
+        }
+
+    }
+
 
 
     [HttpPost, Authorize]

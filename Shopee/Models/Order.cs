@@ -25,9 +25,8 @@ public class Order
     public Guid? ShippingId { get; set; }
     public Shipping Shipping { get; set; }
 
-    [Required]
     public Guid? ProcessByUserId { get; set; }
-    public User ProcessByUser { get; set; }
+    public User? ProcessByUser { get; set; }
 
     [Required]
     public PaymentType Payment { get; set; }

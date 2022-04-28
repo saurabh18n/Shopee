@@ -19,7 +19,7 @@
             -webkit-text-fill-color: transparent;
         }
     </style>
-
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body style="background-color: #E5F3E7;">
@@ -35,6 +35,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Orders
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-action="Manage" asp-controller="Order">List</a></li>
+                                <li><a class="dropdown-item" asp-action="Create" asp-controller="Product">Add</a></li>
+                            </ul>
+                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
