@@ -16,7 +16,7 @@ namespace Shopee.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, defaultValue: new Guid("0ecedf68-ff54-46f1-b41e-d66f4e53c8f2"), collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Category = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
@@ -37,7 +37,7 @@ namespace Shopee.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, defaultValue: new Guid("559840c0-febf-4a4f-a79f-684c169236aa"), collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Username = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
@@ -58,6 +58,37 @@ namespace Shopee.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OrderByUserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    OrderTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    OrderUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ShippingId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ProcessByUserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_OrderByUserId",
+                        column: x => x.OrderByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_ProcessByUserId",
+                        column: x => x.ProcessByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
@@ -99,10 +130,34 @@ namespace Shopee.Migrations
                 .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
 
             migrationBuilder.CreateTable(
+                name: "Shipping",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OrderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Carrier = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Docket = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shipping", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shipping_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+
+            migrationBuilder.CreateTable(
                 name: "CartItems",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, defaultValue: new Guid("dad58381-c4ee-4333-95df-7201c1947787"), collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Quantity = table.Column<int>(type: "int", nullable: false)
@@ -120,6 +175,34 @@ namespace Shopee.Migrations
                         name: "FK_CartItems_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OrderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -152,18 +235,18 @@ namespace Shopee.Migrations
                 columns: new[] { "Id", "Category", "ParentId" },
                 values: new object[,]
                 {
-                    { new Guid("0982ad8b-71d6-46c0-ad14-0df2f24cc298"), "Fession", null },
-                    { new Guid("4afd733a-9e6a-4106-95be-edb3fb6d02b1"), "Electronics", null },
-                    { new Guid("80779bbf-ecaa-4086-9eed-8cbccc47eb2d"), "Mobile", null },
-                    { new Guid("91333293-e838-4682-b12c-398d9e845993"), "All", null },
-                    { new Guid("ae7af2e9-93ad-4e21-8c6a-232f788db03b"), "Household", null },
-                    { new Guid("ce9a809e-86c2-448f-a748-04f4b15dc374"), "TV", null }
+                    { new Guid("0e797c91-b9e0-48fa-9a4b-20e07b5b053a"), "Fession", null },
+                    { new Guid("daf2a5c6-ae80-4b8a-993e-b940c6cbea18"), "Household", null },
+                    { new Guid("e50fea4b-d87b-4038-8294-e957931d2e7f"), "Mobile", null },
+                    { new Guid("e86c65c1-d47f-410d-941a-76eb668ffa67"), "Electronics", null },
+                    { new Guid("f855ddea-df69-458b-9935-0a0e7b7ccd55"), "TV", null },
+                    { new Guid("f8cd83a1-983d-40bc-a710-0b23d93d716e"), "All", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "ContactNumber", "Email", "FirstName", "IsAdmin", "LastName", "Location", "Password", "Username" },
-                values: new object[] { new Guid("51e22454-71b0-45c3-b037-36d65d178385"), "0000000", "admin@local.com", "Admin", true, "", "Office", "admin", "admin" });
+                values: new object[] { new Guid("f2b4c8d5-11e7-4e98-a787-5528d43a64ca"), "0000000", "admin@local.com", "Admin", true, "", "Office", "admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_ProductId",
@@ -181,6 +264,26 @@ namespace Shopee.Migrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ProductId",
+                table: "OrderItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderByUserId",
+                table: "Orders",
+                column: "OrderByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ProcessByUserId",
+                table: "Orders",
+                column: "ProcessByUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_product_images_ProductId",
                 table: "product_images",
                 column: "ProductId");
@@ -194,6 +297,12 @@ namespace Shopee.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shipping_OrderId",
+                table: "Shipping",
+                column: "OrderId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -202,10 +311,19 @@ namespace Shopee.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
                 name: "product_images");
 
             migrationBuilder.DropTable(
+                name: "Shipping");
+
+            migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Categories");

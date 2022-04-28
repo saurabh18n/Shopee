@@ -6,7 +6,8 @@ public enum OrderStatus
     [EnumMember(Value = "PENDING")]
     Pending,
     [EnumMember(Value = "PROCESSING")]
-    Processing, [EnumMember(Value = "INTRANSIT")]
+    Processing,
+    [EnumMember(Value = "INTRANSIT")]
     Intransit,
     [EnumMember(Value = "COMPLETED")]
     Completed,

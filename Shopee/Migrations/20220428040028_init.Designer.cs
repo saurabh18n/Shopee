@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopee;
 
@@ -10,9 +11,10 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220428040028_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,13 +54,6 @@ namespace Shopee.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("double");
-
                     b.Property<Guid>("OrderByUserId")
                         .HasColumnType("char(36)");
 
@@ -68,11 +63,7 @@ namespace Shopee.Migrations
                     b.Property<DateTime>("OrderUpdated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Payment")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ProcessByUserId")
-                        .IsRequired()
+                    b.Property<Guid>("ProcessByUserId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("ShippingId")
@@ -80,15 +71,6 @@ namespace Shopee.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<double>("Tax")
-                        .HasColumnType("double");
-
-                    b.Property<string>("pda")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("pdb")
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -187,32 +169,32 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1a7f3805-de49-4789-85ba-dee8e3260055"),
+                            Id = new Guid("f8cd83a1-983d-40bc-a710-0b23d93d716e"),
                             Category = "All"
                         },
                         new
                         {
-                            Id = new Guid("44704e8d-9e7e-4c14-a186-c6fcea6dd846"),
+                            Id = new Guid("e86c65c1-d47f-410d-941a-76eb668ffa67"),
                             Category = "Electronics"
                         },
                         new
                         {
-                            Id = new Guid("725f0627-4acb-4efb-9f8e-977d4ba9f0c1"),
+                            Id = new Guid("e50fea4b-d87b-4038-8294-e957931d2e7f"),
                             Category = "Mobile"
                         },
                         new
                         {
-                            Id = new Guid("8a9c9458-7ff8-4362-a46d-982e0355bbcf"),
+                            Id = new Guid("f855ddea-df69-458b-9935-0a0e7b7ccd55"),
                             Category = "TV"
                         },
                         new
                         {
-                            Id = new Guid("f55392db-c0a7-4968-963e-275737be77b9"),
+                            Id = new Guid("0e797c91-b9e0-48fa-9a4b-20e07b5b053a"),
                             Category = "Fession"
                         },
                         new
                         {
-                            Id = new Guid("dfcd9725-e5fb-4bca-9c3f-34ef110f5e44"),
+                            Id = new Guid("daf2a5c6-ae80-4b8a-993e-b940c6cbea18"),
                             Category = "Household"
                         });
                 });
@@ -311,7 +293,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b48f370e-e673-43c8-99a7-f97d3ee52fb5"),
+                            Id = new Guid("f2b4c8d5-11e7-4e98-a787-5528d43a64ca"),
                             ContactNumber = "0000000",
                             Email = "admin@local.com",
                             FirstName = "Admin",

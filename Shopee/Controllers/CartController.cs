@@ -35,7 +35,6 @@ namespace Shopee.Controllers
             {
                 Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
                 CartItem? exci = await _context.CartItems.FirstOrDefaultAsync(c => c.ProductId == ProdId && c.UserId == userId);
-                Console.WriteLine("Found");
                 if (exci == null)
                 {
                     _context.CartItems.Add(new CartItem

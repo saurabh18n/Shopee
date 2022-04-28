@@ -67,11 +67,11 @@
                 <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                     <select class="form-select" id="payment" name="payment" required>
                         <option value="">Select Payment</option>
-                        <option value="CC">Credit Card</option>
-                        <option value="DC">Debit Card</option>
-                        <option value="NETB">Netbanking</option>
-                        <option value="UPI">UPI</option>
-                        <option value="COD">Cash On Delivery</option>
+                        <option value="0">Credit Card</option>
+                        <option value="1">Debit Card</option>
+                        <option value="2">Netbanking</option>
+                        <option value="3">UPI</option>
+                        <option value="4">Cash On Delivery</option>
                     </select>
                 </div>
                 <input type="hidden" name="payment">
@@ -131,23 +131,23 @@
         $('#payment-detail-1').attr({ required: true })
         $('#payment-detail-2').attr({ required: true })
         switch (paymentMethod) {
-            case "CC":
+            case "0":
                 $('#payment-detail-1-label').text("Credit Card Number");
                 $('#payment-detail-2-label').text("Expiry date");
                 break;
-            case "DC":
+            case "1":
                 $('#payment-detail-1-label').text("Debit Card Number");
                 $('#payment-detail-2-label').text("Expiry date");
                 break;
-            case "NETB":
+            case "2":
                 $('#payment-detail-1-label').text("Bank Name");
                 $('#payment-detail-2-label').text("Account#");
                 break;
-            case "UPI":
+            case "3":
                 $('#payment-detail-1-label').text("UPI");
                 $('#payment-detail-2-label').text('@@');
                 break;
-            case "COD":
+            case "4":
                 $("#paymentDetailscontainer").addClass('d-none');
                 $('#payment-detail-1').attr({ required: false })
                 $('#payment-detail-2').attr({ required: false })

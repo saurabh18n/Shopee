@@ -11,8 +11,8 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220427033221_init")]
-    partial class init
+    [Migration("20220428051126_oa-public")]
+    partial class oapublic
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,8 +28,7 @@ namespace Shopee.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("dad58381-c4ee-4333-95df-7201c1947787"));
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
@@ -47,6 +46,76 @@ namespace Shopee.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Shopee.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("OrderByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("OrderUpdated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Payment")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProcessByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("ShippingId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("pda")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("pdb")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderByUserId");
+
+                    b.HasIndex("ProcessByUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Shopee.Models.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Shopee.Models.Product", b =>
@@ -95,8 +164,7 @@ namespace Shopee.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("0ecedf68-ff54-46f1-b41e-d66f4e53c8f2"));
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -114,32 +182,32 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("91333293-e838-4682-b12c-398d9e845993"),
+                            Id = new Guid("280459f3-fd08-4927-9f90-4ea7ef057340"),
                             Category = "All"
                         },
                         new
                         {
-                            Id = new Guid("4afd733a-9e6a-4106-95be-edb3fb6d02b1"),
+                            Id = new Guid("925ff2ac-83d9-403e-899e-3837f8582823"),
                             Category = "Electronics"
                         },
                         new
                         {
-                            Id = new Guid("80779bbf-ecaa-4086-9eed-8cbccc47eb2d"),
+                            Id = new Guid("da0a4ed7-307d-4fea-97e0-faea2ebf0807"),
                             Category = "Mobile"
                         },
                         new
                         {
-                            Id = new Guid("ce9a809e-86c2-448f-a748-04f4b15dc374"),
+                            Id = new Guid("e44e97b6-8244-4279-b792-f71eed4c2b4d"),
                             Category = "TV"
                         },
                         new
                         {
-                            Id = new Guid("0982ad8b-71d6-46c0-ad14-0df2f24cc298"),
+                            Id = new Guid("61ece1b7-d5bf-4d4e-acc8-a7402d6cb6dd"),
                             Category = "Fession"
                         },
                         new
                         {
-                            Id = new Guid("ae7af2e9-93ad-4e21-8c6a-232f788db03b"),
+                            Id = new Guid("1c2e40b0-7200-4548-b7eb-9d7813150942"),
                             Category = "Household"
                         });
                 });
@@ -164,12 +232,36 @@ namespace Shopee.Migrations
                     b.ToTable("product_images");
                 });
 
+            modelBuilder.Entity("Shopee.Models.Shipping", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Carrier")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Docket")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Shipping");
+                });
+
             modelBuilder.Entity("Shopee.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasDefaultValue(new Guid("559840c0-febf-4a4f-a79f-684c169236aa"));
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -214,7 +306,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("51e22454-71b0-45c3-b037-36d65d178385"),
+                            Id = new Guid("33eca36d-f8a9-44fb-87fe-d466fcb7e073"),
                             ContactNumber = "0000000",
                             Email = "admin@local.com",
                             FirstName = "Admin",
@@ -244,6 +336,44 @@ namespace Shopee.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Shopee.Models.Order", b =>
+                {
+                    b.HasOne("Shopee.Models.User", "OrderByUser")
+                        .WithMany()
+                        .HasForeignKey("OrderByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopee.Models.User", "ProcessByUser")
+                        .WithMany()
+                        .HasForeignKey("ProcessByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderByUser");
+
+                    b.Navigation("ProcessByUser");
+                });
+
+            modelBuilder.Entity("Shopee.Models.OrderItem", b =>
+                {
+                    b.HasOne("Shopee.Models.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopee.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Shopee.Models.Product", b =>
@@ -283,6 +413,25 @@ namespace Shopee.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Shopee.Models.Shipping", b =>
+                {
+                    b.HasOne("Shopee.Models.Order", "Order")
+                        .WithOne("Shipping")
+                        .HasForeignKey("Shopee.Models.Shipping", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Shopee.Models.Order", b =>
+                {
+                    b.Navigation("Items");
+
+                    b.Navigation("Shipping")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shopee.Models.Product", b =>

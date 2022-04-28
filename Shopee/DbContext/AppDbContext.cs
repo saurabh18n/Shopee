@@ -27,7 +27,7 @@ namespace Shopee
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseMySql(Configuration["database"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.28-mysql"));
-                optionsBuilder.UseLoggerFactory(new LoggerFactory());
+                // optionsBuilder.UseLoggerFactory(new LoggerFactory());
             }
         }
 
@@ -108,11 +108,17 @@ namespace Shopee
             #endregion
 
             #region Order
+            modelBuilder.Entity<Order>().HasOne(O => O.Shipping).WithOne(s => s.Order).HasForeignKey<Shipping>(s => s.OrderId);
             #endregion
 
-            #region Order
+            #region Order Item
             modelBuilder.Entity<OrderItem>().HasOne(oi => oi.Order).WithMany(o => o.Items).HasForeignKey(oi => oi.OrderId);
-            modelBuilder.Entity<OrderItem>()
+            modelBuilder.Entity<OrderItem>().HasOne(Oi => Oi.Product).WithMany().HasForeignKey(oi => oi.ProductId);
+            #endregion
+
+
+            #region Shipping
+            // modelBuilder.Entity<Shipping>().HasOne(s => s.Order).WithOne(o => o.Shipping).HasForeignKey<Order>(s => s.ShippingId);
             #endregion
 
             OnModelCreatingPartial(modelBuilder);
