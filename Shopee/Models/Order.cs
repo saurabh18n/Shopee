@@ -34,9 +34,10 @@ public class Order
     public string? pda { get; set; }
     public string? pdb { get; set; }
 
-    [Required]
+    [Required, MaxLength(400)]
     public string Address { get; set; }
     public double Amount { get; set; }
     public double Tax { get; set; }
-
+    
+    public List<Remarks> Remarks { get; set; }
 }

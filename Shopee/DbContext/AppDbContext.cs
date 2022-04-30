@@ -27,7 +27,7 @@ namespace Shopee
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseMySql(Configuration["database"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.28-mysql"));
-                // optionsBuilder.UseLoggerFactory(new LoggerFactory());
+                optionsBuilder.UseLoggerFactory(new LoggerFactory());
             }
         }
 
@@ -135,7 +135,10 @@ namespace Shopee
         public DbSet<CartItem> CartItems { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+
         public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<Shipping> Shippings { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

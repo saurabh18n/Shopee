@@ -62,7 +62,10 @@ public class OrderController : Controller
     [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> o([FromRoute] Guid Id)
     {
-        Order? ord = await _db.Orders.Include(O => O.OrderByUser).Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == Id);
+        Order? ord = await _db.Orders
+        .Include(O => O.OrderByUser)
+        .Include(o => o.Items).ThenInclude(oi => oi.Product)
+        .FirstOrDefaultAsync(o => o.Id == Id);
         if (ord != null)
         {
             return View(ord);
@@ -71,10 +74,68 @@ public class OrderController : Controller
         {
             return Ok("Order Not Found");
         }
-
     }
 
+    [Authorize(Roles = Roles.Admin)]
+    private async Task<IActionResult> acc(Guid Id)
+    {
+        Console.WriteLine("in acc");
+        Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
+        Order? ord = await _db.Orders
+        .FirstOrDefaultAsync(o => o.Id == Id);
 
+        if (ord != null)
+        {
+            if (ord.Status == OrderStatus.Pending)
+            {
+                ord.Status = OrderStatus.Processing;
+                ord.OrderUpdated = DateTime.Now;
+                ord.ProcessByUserId = userId;
+                await _db.SaveChangesAsync();
+                return View("o", ord);
+            }
+            else
+            {
+                Response.StatusCode = 400;
+                return View("o", ord);
+            }
+        }
+        else
+        {
+            Response.StatusCode = 404;
+            return Json("Order Not Found");
+        }
+    }
+
+    [Authorize(Roles = Roles.Admin)]
+    private async Task<IActionResult> rej(Guid Id)
+    {
+        Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
+        Order? ord = await _db.Orders
+        .FirstOrDefaultAsync(o => o.Id == Id);
+
+        if (ord != null)
+        {
+            if (ord.Status == OrderStatus.Pending)
+            {
+                ord.Status = OrderStatus.Cancelled;
+                ord.OrderUpdated = DateTime.Now;
+                ord.ProcessByUserId = userId;
+                await _db.SaveChangesAsync();
+                return View("o", ord);
+            }
+            else
+            {
+                Response.StatusCode = 400;
+                return View("o", ord);
+            }
+        }
+        else
+        {
+            Response.StatusCode = 404;
+            return Json("Order Not Found");
+        }
+    }
 
     [HttpPost, Authorize]
     public async Task<IActionResult> Checkout(string address, PaymentType payment, string pda, string pdb)

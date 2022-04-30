@@ -12,6 +12,9 @@ public class Shipping
     public Order Order { get; set; }
 
     [Required]
+    public ShippingType ShippingType { get; set; }
+
+    [Required]
     public String Carrier { get; set; }
 
     [Required]
