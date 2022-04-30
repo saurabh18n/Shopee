@@ -33,9 +33,12 @@
             <div class=" col-auto px-0 me-1">
                     <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-items" role="button"">Items</a>
             </div>
+            <div class=" col-auto px-0 me-1">
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-remarks" role="button"">Remarks</a>
+            </div>
         </div>
-        <div name=" details-details-divs" class=" row flex-row justify-content-left py-2">
-                        <div class="collapse show px-0" id="d-order">
+        <div name="details-details-divs" class=" row flex-row justify-content-left py-2">
+            <div class="collapse show px-0" id="d-order">
                             <div class="card card-body">
                                 <table class="table table-borderd m-0">
                                     <tr>
@@ -56,8 +59,8 @@
                                     </tr>
                                 </table>
                             </div>
-                        </div>
-                        <div class="collapse px-0" id="d-customer">
+            </div>
+            <div class="collapse px-0" id="d-customer">
                             <div class="card card-body">
                                 <table class="table table-borderd m-0">
                                     <tr>
@@ -70,94 +73,101 @@
                                     </tr>
                                 </table>
                             </div>
-                        </div>
-                        <div class="collapse px-0" id="d-payment">
-                            <div class="card card-body">
-                                <table class="table table-borderd m-0">
-                                    <tr>
-                                        <td>Amount</td>
-                                        <td>@Model.Amount</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax</td>
-                                        <td>@Model.Tax</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Payment Type</td>
-                                        <td>@Payments[(int)@Model.Payment]</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@PaymentsLba[(int)@Model.Payment]</td>
-                                        <td>@Model.pda</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@PaymentsLbb[(int)@Model.Payment]</td>
-                                        <td>@Model.pdb</td>
-                                    </tr>
-
-                                </table>
-                            </div>
-                        </div>
-                        <div class="collapse px-0" id="d-items">
-                            <div class="card card-body">
-                                <table class="table table-borderd m-0">
-                                    <tr>
-                                        <td>Sr#</td>
-                                        <td>Item</td>
-                                        <td>Avaibility</td>
-                                        <td>Quantity</td>
-                                    </tr>
+            </div>
+            <div class="collapse px-0" id="d-payment">
+                <div class="card card-body">
+                    <table class="table table-borderd m-0">
+                        <tr>
+                            <td>Amount</td>
+                            <td>@Model.Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Tax</td>
+                            <td>@Model.Tax</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Type</td>
+                            <td>@Payments[(int)@Model.Payment]</td>
+                        </tr>
+                        <tr>
+                            <td>@PaymentsLba[(int)@Model.Payment]</td>
+                            <td>@Model.pda</td>
+                        </tr>
+                        <tr>
+                            <td>@PaymentsLbb[(int)@Model.Payment]</td>
+                            <td>@Model.pdb</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="collapse px-0" id="d-items">
+                <div class="card card-body">
+                    <table class="table table-borderd m-0">
+                        <tr>
+                            <td>Sr#</td>
+                            <td>Item</td>
+                            <td>Avaibility</td>
+                            <td>Quantity</td>
+                        </tr>
                         @{
                             int index = 1;
                         }
                         @foreach (OrderItem item in Model.Items)
                         {                                        
-                                        <tr>
-                                            <td>@index</td>
-                                            <td>@item.Product.Title</td>
-                                            <td>@item.Product.StoreQty</td>
-                                            <td>@item.Quantity</td>
-                                        </tr>
+                            <tr>
+                                <td>@index</td>
+                                <td>@item.Product.Title</td>
+                                <td>@item.Product.StoreQty</td>
+                                <td>@item.Quantity</td>
+                            </tr>
                             index++;
                         }
                                 </table>
                             </div>
-                        </div>
             </div>
-
-            <div name="order-actions" class="row flex-row justify-content-left px-2">
-                <div class="col-auto my-2">                
-                    <div class="row">
-                        <div class="col-auto px-0 me-1">
-                                <a id="btn-accept" asp-action="acc" asp-controller="order" asp-route-Id="@Model.Id"  type="submit" class="btn btn-success" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Accept</a>
-                        </div>
-                        <div class="col-auto px-0 me-1">
-                                <button id="btn-reject" asp-action="acc" asp-controller="order" asp-route-Id="@Model.Id" type="submit" class="btn btn-danger" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Reject</button>
-                        </div>
-                    </div>  
+            <div class="collapse px-0" id="d-remarks">
+                <div class="card card-body">
+                    <p>Remakrs</p>
                 </div>
-                <div class="col-auto my-2">
-                    <form class="row">
-                        <div class="col-auto px-0 me-1">
-                            <select class="form-select" value="@Model.Status" asp-items="Html.GetEnumSelectList<OrderStatus>()"></select>
-                        </div>
-                        <div class="col-auto px-0 me-1">
-                            <select class="form-select" value="@Model.Status" asp-items="Html.GetEnumSelectList<ShippingType>()"></select>
-                        </div>
-                        <div class="col-auto px-0 me-1">
-                            <input class="form-control" type="text" id="docket" placeholder="#Docket" "@(Model.Status == OrderStatus.Pending ? "disabled" : "")">
-                        </div>
-                        <div class="col-auto px-0 me-1">
-                            <input class="form-control" type="text" id="remark" placeholder="Remark" "@(Model.Status == OrderStatus.Cancelled ? "disabled" : "")">
-                        </div>
-                        <div class="col-auto px-0 me-1">
-                            <button id="btn-reject" class="btn btn-primary" data-bs-toggle="collapse" role="button" "@(Model.Status == @OrderStatus.Cancelled ? "disabled" : "")" >Update</button>
-                        </div>
-                    </form>   
-                </div>           
             </div>
         </div>
+        <div name="order-actions" class="row flex-row justify-content-left px-2">
+            <div class="col-auto">                
+                <div class="row flex-grow-0">
+                    <div class="col-auto px-0 me-1 my-2">
+                        <form method="get" asp-action="acc" asp-controller="order" asp-route-Id="@Model.Id">
+                            <button id="btn-accept" type="submit" class="btn btn-success" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Accept</button>
+                        </form>
+                    </div>
+                   <div class="col-auto px-0 me-1 my-2">
+                        <form method="get" asp-action="rej" asp-controller="order" asp-route-Id="@Model.Id">
+                            <button id="btn-reject"  type="submit" class="btn btn-danger" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <form class="row" method="post" asp-action="update" asp-controller="order" asp-route-Id="@Model.Id" >
+                     <div class="col-auto px-0 me-1 my-2">
+                        @Html.DropDownList("orderstatus", new SelectList(Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>(), Model.Status),htmlAttributes:new{@class="form-select"})
+                    </div>
+                    <div class="col-auto px-0 me-1 my-2">
+                        @Html.DropDownList("shipping", new SelectList(Enum.GetValues(typeof(ShippingType)).Cast<ShippingType>(),selectedValue: (Model.Shipping?.ShippingType ?? ShippingType.IndiaPost)),htmlAttributes:new{@class="form-select"})
+                    </div>
+                    <div class="col-auto px-0 me-1 my-2">
+                        <input class="form-control" type="text" id="docket" name="docket" placeholder="#Docket" "@(Model.Status == OrderStatus.Pending ? "disabled" : "")"></input>
+                    </div>
+                    <div class="col-auto px-0 me-1 my-2">
+                        <input class="form-control" type="text" id="remark" name="remark" placeholder="Remark" "@(Model.Status == OrderStatus.Cancelled ? "disabled" : "")"></input>
+                    </div>
+                    <div class="col-auto px-0 me-1 my-2">
+                        <button id="btn-reject" type="submit" class="btn btn-primary" role="button" "@(Model.Status == @OrderStatus.Cancelled ? "disabled" : "")" >Update</button>
+                    </div> 
+                </form>
+            </div>           
+        </div>
     </div>
+</div>
 @section Scripts{
     <script type=" text/javascript">
         $('.btn-primary').on('click', function () { $('.collapse').collapse('hide'); })

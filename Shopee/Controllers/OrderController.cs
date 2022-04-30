@@ -25,9 +25,8 @@ public class OrderController : Controller
     [Authorize]
     public async Task<IActionResult> Index()
     {
-        Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
         return View(await _db.Orders.
-        Where(o => o.OrderByUserId == userId).Include(o => o.Items).ThenInclude(oi => oi.Product).Select(oo => new Order
+        Where(o => o.OrderByUserId == GetUserId()).Include(o => o.Items).ThenInclude(oi => oi.Product).Select(oo => new Order
         {
             Id = oo.Id,
             Status = oo.Status,
@@ -47,8 +46,7 @@ public class OrderController : Controller
     [Authorize]
     public async Task<IActionResult> Checkout()
     {
-        Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
-        return View(await _db.CartItems.Where(CI => CI.UserId == userId).Include(ci => ci.Product).ToListAsync());
+        return View(await _db.CartItems.Where(CI => CI.UserId == GetUserId()).Include(ci => ci.Product).ToListAsync());
     }
 
     //Administration
@@ -77,20 +75,16 @@ public class OrderController : Controller
     }
 
     [Authorize(Roles = Roles.Admin)]
-    private async Task<IActionResult> acc(Guid Id)
+    public async Task<IActionResult> acc(Guid Id)
     {
-        Console.WriteLine("in acc");
-        Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
-        Order? ord = await _db.Orders
-        .FirstOrDefaultAsync(o => o.Id == Id);
-
+        Order? ord = await getSingleOrder(Id);
         if (ord != null)
         {
             if (ord.Status == OrderStatus.Pending)
             {
                 ord.Status = OrderStatus.Processing;
                 ord.OrderUpdated = DateTime.Now;
-                ord.ProcessByUserId = userId;
+                ord.ProcessByUserId = GetUserId();
                 await _db.SaveChangesAsync();
                 return View("o", ord);
             }
@@ -108,19 +102,17 @@ public class OrderController : Controller
     }
 
     [Authorize(Roles = Roles.Admin)]
-    private async Task<IActionResult> rej(Guid Id)
+    public async Task<IActionResult> rej(Guid Id)
     {
-        Guid userId = Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
-        Order? ord = await _db.Orders
-        .FirstOrDefaultAsync(o => o.Id == Id);
 
+        Order? ord = await getSingleOrder(Id);
         if (ord != null)
         {
             if (ord.Status == OrderStatus.Pending)
             {
                 ord.Status = OrderStatus.Cancelled;
                 ord.OrderUpdated = DateTime.Now;
-                ord.ProcessByUserId = userId;
+                ord.ProcessByUserId = GetUserId();
                 await _db.SaveChangesAsync();
                 return View("o", ord);
             }
@@ -135,6 +127,62 @@ public class OrderController : Controller
             Response.StatusCode = 404;
             return Json("Order Not Found");
         }
+    }
+
+    [HttpPost, Authorize(Roles = Roles.Admin), ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update([FromRoute] Guid Id, [FromForm] string remark, [FromForm] OrderStatus orderstatus, [FromForm] ShippingType shipping, [FromForm] string docket)
+    {
+
+        Console.WriteLine($"Update called{remark}");
+
+        Order? ord = await getSingleOrder(Id);
+        if (ord == null) return Ok("Order Not Found");
+
+        if (!string.IsNullOrEmpty(remark))
+        {
+            ord.Remarks.Add(new Remarks
+            {
+                Id = Guid.NewGuid(),
+                Text = remark,
+                ByUserId = GetUserId(),
+                TimeStamp = DateTime.Now,
+                OrderId = ord.Id
+            });
+        }
+
+        if (!string.IsNullOrEmpty(docket))
+        {
+            ord.Shipping = new Shipping()
+            {
+                Id = Guid.NewGuid(),
+                OrderId = ord.Id,
+                ShippingType = shipping,
+                Carrier = "",
+                Docket = docket
+            };
+
+        }
+
+        ord.OrderUpdated = DateTime.Now;
+        ord.ProcessByUserId = GetUserId();
+        await _db.SaveChangesAsync();
+        return View("o", await getSingleOrder(Id));
+
+    }
+
+    private async Task<Order?> getSingleOrder(Guid Id)
+    {
+        return await _db.Orders
+        .Include(o => o.OrderByUser)
+        .Include(o => o.Shipping)
+        .Include(o => o.Items).ThenInclude(oi => oi.Product)
+        .Include(o => o.Remarks)
+        .FirstOrDefaultAsync(o => o.Id == Id);
+    }
+
+    private Guid GetUserId()
+    {
+        return Guid.Parse(User?.Identity?.Name ?? new Guid().ToString());
     }
 
     [HttpPost, Authorize]

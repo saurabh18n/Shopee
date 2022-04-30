@@ -109,6 +109,7 @@ namespace Shopee
 
             #region Order
             modelBuilder.Entity<Order>().HasOne(O => O.Shipping).WithOne(s => s.Order).HasForeignKey<Shipping>(s => s.OrderId);
+            modelBuilder.Entity<Order>().HasMany(o => o.Remarks).WithOne().HasForeignKey(r => r.OrderId);
             #endregion
 
             #region Order Item
@@ -116,11 +117,13 @@ namespace Shopee
             modelBuilder.Entity<OrderItem>().HasOne(Oi => Oi.Product).WithMany().HasForeignKey(oi => oi.ProductId);
             #endregion
 
-
             #region Shipping
-            // modelBuilder.Entity<Shipping>().HasOne(s => s.Order).WithOne(o => o.Shipping).HasForeignKey<Order>(s => s.ShippingId);
+            modelBuilder.Entity<Shipping>().HasOne(s => s.Order).WithOne(o => o.Shipping).HasForeignKey<Order>(s => s.ShippingId);
             #endregion
 
+            #region Remarks
+            modelBuilder.Entity<Remarks>().HasOne(r => r.Order).WithMany(o => o.Remarks).HasForeignKey(r => r.OrderId);
+            #endregion
             OnModelCreatingPartial(modelBuilder);
         }
 

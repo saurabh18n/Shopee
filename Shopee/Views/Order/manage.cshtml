@@ -21,10 +21,10 @@
                 <td>@Ord.Amount</td>
                 <td>@Ord.Status</td>
                 <td>
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger" disabled="@(Ord.Status != OrderStatus.Pending)">
                         Reject
                     </button>
-                    <button href="" class="btn btn-success mx-2">
+                    <button href="" class="btn btn-success mx-2" disabled="@(Ord.Status != OrderStatus.Pending)">
                         Accept
                     </button>
                     <a asp-action="o" asp-controller="order" asp-route-Id="@Ord.Id" class="btn btn-primary">View</a>

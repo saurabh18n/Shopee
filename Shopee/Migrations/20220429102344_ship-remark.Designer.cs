@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopee;
 
@@ -10,9 +11,10 @@ using Shopee;
 namespace Shopee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220429102344_ship-remark")]
+    partial class shipremark
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,32 +192,32 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e06ecaa6-e081-4097-b9b1-9c2c7d8d1bbc"),
+                            Id = new Guid("339626e7-af32-4d3e-94fe-a59ef6fc6017"),
                             Category = "All"
                         },
                         new
                         {
-                            Id = new Guid("9dbaee26-e86d-45e9-8f65-787bcd5eeea5"),
+                            Id = new Guid("ec35292c-6621-4c4e-b48b-f1a5b13ee088"),
                             Category = "Electronics"
                         },
                         new
                         {
-                            Id = new Guid("7d3b5ad6-cb0f-46ef-b74d-2a58398375c2"),
+                            Id = new Guid("f6f16e3d-412a-4221-bdca-9ec9ff530552"),
                             Category = "Mobile"
                         },
                         new
                         {
-                            Id = new Guid("dec40b98-1061-4790-8e80-0357b7247f25"),
+                            Id = new Guid("92c1dc23-b3ab-4d6f-9463-6a52c3bb62a5"),
                             Category = "TV"
                         },
                         new
                         {
-                            Id = new Guid("09dd8870-1e89-4483-ac52-a7ab7462f54b"),
+                            Id = new Guid("2f81e396-0b9e-40d0-88b3-fb9ec64cd5ba"),
                             Category = "Fession"
                         },
                         new
                         {
-                            Id = new Guid("5ef187df-d495-42c0-a2d8-2c08b357ca7a"),
+                            Id = new Guid("8151f7cf-c47f-437d-8d9a-07086fdb736a"),
                             Category = "Household"
                         });
                 });
@@ -342,7 +344,7 @@ namespace Shopee.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b5f916fc-473e-4de4-bcf1-5b0744b2b215"),
+                            Id = new Guid("aa24fb08-0236-4920-a65b-3257a47f90f9"),
                             ContactNumber = "0000000",
                             Email = "admin@local.com",
                             FirstName = "Admin",
@@ -463,15 +465,13 @@ namespace Shopee.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopee.Models.Order", "Order")
+                    b.HasOne("Shopee.Models.Order", null)
                         .WithMany("Remarks")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ByUser");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Shopee.Models.Order", b =>
