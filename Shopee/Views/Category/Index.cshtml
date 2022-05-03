@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-lg- 6col-md-6 col-xl-4 mx-auto">
-        <table class="table table-border">
+        <table id="categoriesTable" class="table table-border">
             <tr>
                 <th class="d-none">
                     Id
@@ -24,14 +24,14 @@
             {
                 <tr>
                     <td class="d-none">@item.Id</td>
+                    <td class="d-none search-col">@item.Category.ToLower()@(item.ParentCategory?.Category.ToLower())</td>
                     <td>@item.Category</td>
                     <td>@(item.ParentCategory?.Category ?? "-")</td>
                     <td>
-                        <a class="btn btn-outline btn-outline-primary  my-1 mx-1" asp-action="Edit"
-                        asp-controller="Category" asp-route-Id="@item.Id">
+                        <a class="btn btn-outline btn-outline-primary  my-1 mx-1 btn-sm" asp-action="Edit" asp-controller="Category" asp-route-Id="@item.Id">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a class="btn btn-outline-secondary my-1 mx-1" asp-action="Delete" asp-controller="Category">
+                        <a class="btn btn-outline-secondary my-1 mx-1 btn-sm" asp-action="Delete" asp-controller="Category">
                             <i class="bi bi-trash-fill"></i>
                         </a>
                     </td>
@@ -41,3 +41,15 @@
 
     </div>
 </div>
+
+@section Scripts{
+<script type="text/javascript">
+    $('#search').on('keyup', function () {
+        var search = $(this).val().toLowerCase();
+        $("#categoriesTable tr").show();
+        if (search !== '') {
+            $("#categoriesTable tr").find(`td.search-col:not(:contains('${search}'))`).parent().hide()
+        }
+    });
+</script>
+}

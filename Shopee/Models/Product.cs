@@ -32,6 +32,8 @@ public class Product
     public Guid CategoryId { get; set; }
     public virtual ProductCategory Category { get; set; }
 
+    public DateTime AddedAt { get; set; }
+
     public Guid AddedById { get; set; }
     public User AddedBy { get; set; }
 }

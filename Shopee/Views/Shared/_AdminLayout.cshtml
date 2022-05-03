@@ -60,34 +60,24 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Categories
+                                Manage
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Category">List</a></li>
-                                <li><a class="dropdown-item" asp-action="Add" asp-controller="Category">Add</a></li>
-
+                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Category">Categories</a></li>
                             </ul>
                         </li>
-
                     </ul>
                     <div class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control me-2" id="search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
                     </div>
                     <ul class="navbar-nav">
                         @if ((User != null) && (User?.Identity?.IsAuthenticated ?? false))
                         {
-                            ;
-                            ;
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @User?.FindFirst(c=> c.Type=="FName")?.Value
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="logout">Logout</a>
                                     </li>

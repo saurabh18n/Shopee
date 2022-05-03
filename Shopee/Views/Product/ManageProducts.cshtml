@@ -3,6 +3,55 @@
 @{
     ViewData["Title"] = "Products";
 }
+<form class="row g-3">
+    @* <input type="hidden" name="search" value="@HttpContextAccessor?.HttpContext?.Request.Query["search"]" /> *@
+    <input type="hidden" name="search" value="@Context.Request.Query["search"]" />
+    <div class="col-auto">
+        <select class="form-select" name="cat">
+            @foreach (ProductCategory cat in ViewBag.Categories)
+            {
+                @if (@Context.Request.Query["cat"].Count > 0)
+                {
+                    if (@Context.Request.Query["cat"][0] == cat.Category)
+                    {
+                        <option value="@cat.Category" selected>@cat.Category</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.Category">@cat.Category</option>
+                    }
+
+
+                }
+                else if (@Context.Request.Query["cat"].Count == 0)
+                {
+                    if (cat.Category == "All")
+                    {
+                        <option value="@cat.Category" selected>@cat.Category</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.Category">@cat.Category</option>
+
+
+                    }
+                }
+
+            }
+        </select>
+    </div>
+    <div class="col-1">
+        <input type="number" class="form-control" step="0.01" name="min" value="0" />
+    </div>
+    <div class="col-1">
+        <input type="number" class="form-control" step="0.01" name="max" value="99999" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">
+            Filter
+        </button>
+    </div>
+</form>
 <table class="table table-border">
     <tr>
         <th>
@@ -23,22 +72,16 @@
         <th>
             Price
         </th>
-        <th>
-            Description
-        </th>
-
     </tr>
     @foreach (Product item in Model)
     {
         <tr>
-            <td>@(item.Category?.ParentCategory?.Category ?? "-")</td>
-            <td>@item.Category?.Category</td>
-            <td>@item.Title</td>
+            <td>@(item.Category?.ParentCategory?.Category) @item.Category?.Category</td>
             <td>@item.Title</td>
             <td>@item.Desc</td>
             <td>@item.StoreQty</td>
             <td>@item.UnitPrice</td>
-            <td>@item.specification</td>
+            <td></td>
         </tr>
     }
 </table>
