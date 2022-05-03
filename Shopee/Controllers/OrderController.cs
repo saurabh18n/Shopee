@@ -121,7 +121,6 @@ public class OrderController : Controller
     [Authorize(Roles = Roles.Admin), ValidateAntiForgeryToken]
     public async Task<IActionResult> Update([FromRoute] Guid Id, [FromForm] string remark, [FromForm] OrderStatus orderstatus, [FromForm] ShippingType shipping, [FromForm] string docket)
     {
-        Console.WriteLine($"remark - > {remark}");
         Order? ord = await getSingleOrder(Id);
         if (ord == null) return Ok("Order Not Found");
 
@@ -151,7 +150,16 @@ public class OrderController : Controller
             _db.Shippings.Add(ns);
             ord.Shipping = ns;
         }
-        ord.Status = orderstatus;
+        if (ord.Status != OrderStatus.Completed)
+        {
+            ord.Status = orderstatus;
+        }
+        else
+        {
+            ViewBag.Alert = "Can not change status of completed order";
+            ViewBag.AlertType = AlertType.Error;
+        }
+
         ord.OrderUpdated = DateTime.Now;
         ord.ProcessByUserId = GetUserId();
         await _db.SaveChangesAsync();
@@ -168,8 +176,6 @@ public class OrderController : Controller
         .Include(o => o.Items).ThenInclude(oi => oi.Product)
         .Include(o => o.Remarks).ThenInclude(r => r.ByUser)
         .FirstOrDefaultAsync(o => o.Id == Id);
-
-        Console.WriteLine("Hello");
         return Order;
     }
 
