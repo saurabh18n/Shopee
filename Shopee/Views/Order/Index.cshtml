@@ -4,7 +4,9 @@
 }
 <div class="row justify-content-center align-content-cente">
     <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-        @{int acid = 0;}
+        @{
+            int acid = 0;
+        }
         @foreach (Order ord in Model)
         {
             acid += 1;
@@ -12,12 +14,11 @@
                 <div class="accordion" id="a@(acid)">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="h1@(acid)">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#c1@{@acid}" aria-expanded="true" aria-controls="c1@{@acid}">
-                                Order Summery
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#c1@{@acid}" aria-expanded="true" aria-controls="c1@{@acid}">
+                                Order Summery (@(ord.Items[0].Product.Title) @(ord.Items.Count > 1 ? $"and {ord.Items.Count -1 } More Items" : ""))
                             </button>
                         </h2>
-                            <div id="c1@(acid)" class="accordion-collapse collapse @(acid==1 ? "show":"")" aria-labelledby="h1@(acid)"  data-bs-parent="#a@(acid)"> 
+                        <div id="c1@(acid)" class="accordion-collapse collapse @(acid==1 ? "show":"")" aria-labelledby="h1@(acid)" data-bs-parent="#a@(acid)">
                             <div class="accordion-body">
                                 <div class="progress" style="height: 30px;">
                                     @{
@@ -25,15 +26,13 @@
                                                         "bg-danger" };
                                         var plength = new int[] { 20, 50, 70, 100, 100 };
                                     }
-                                    <div class="progress-bar @(colors[(int)ord.Status])" role="progressbar"
-                                    style="width: @(plength[(int)ord.Status])%;" aria-valuenow="25" aria-valuemin="0"
-                                    aria-valuemax="100">
+                                    <div class="progress-bar @(colors[(int)ord.Status])" role="progressbar" style="width: @(plength[(int)ord.Status])%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                         @ord.Status
                                     </div>
                                 </div>
                                 <div class="my-3">
                                     <p>Hello @(User?.FindFirst(c=> c.Type=="FName")?.Value ?? ""), Your Order for
-                                        <strong> @(ord.Items[0].Product.Title) @(ord.Items.Count > 1? $" and { @ord.Items.Count -1} more item(s)  ":"")
+                                        <strong> @(ord.Items[0].Product.Title) @(ord.Items.Count > 1? $" and { @ord.Items.Count -1} more item(s) ":"")
                                             is </strong> @ord.Status
                                     </p>
                                 </div>
@@ -43,17 +42,37 @@
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="h2@(acid)">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#c2@(acid)" aria-expanded="false" aria-controls="c2@(acid)">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c2@(acid)" aria-expanded="false" aria-controls="c2@(acid)">
                                 Items
                             </button>
                         </h2>
                         <div id="c2@(acid)" class="accordion-collapse collapse" aria-labelledby="h2@(acid)" data-bs-parent="#a@(acid)">
                             <div class="accordion-body">
                                 <div class="my-3">
-                                    <p> Your Order for
-                                        <strong> @(ord.Items[0].Product.Title) @(ord.Items.Count > 1? $" and { @ord.Items.Count -1} more item(s)  ":"")
-                                            is </strong> being delivered to <strong>@ord.Address</strong>
+                                    <p>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                @foreach (OrderItem itm in ord.Items)
+                                                {
+                                                <tr>
+                                                    <td>@(ord.Items.IndexOf(itm) + 1)</td>
+                                                    <td>@(itm.Product.Title)</td>
+                                                    <td>@(itm.Product.UnitPrice)</td>
+                                                    <td>@(itm.Quantity)</td>
+                                                    <td>@(itm.Quantity * itm.Product.UnitPrice)</td>
+                                                </tr>
+                                                }
+                                        </tbody>
+                                    </table>
                                     </p>
                                 </div>
                             </div>
@@ -62,18 +81,16 @@
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#c3@(acid)" aria-expanded="false" aria-controls="c3@(acid)">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c3@(acid)" aria-expanded="false" aria-controls="c3@(acid)">
                                 Address
                             </button>
                         </h2>
-                        <div id="c3@(acid)" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                        data-bs-parent="#c1@{@acid}">
+                        <div id="c3@(acid)" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#c1@{@acid}">
                             <div class="accordion-body">
                                 <div class="my-3">
-                                    <p> Your Order for
-                                        <strong> @(ord.Items[0].Product.Title) @(ord.Items.Count > 1? $" and { @ord.Items.Count -1} more item(s)  ":"")
-                                            is </strong> being delivered to <strong>@ord.Address</strong>
+                                    <p>
+                                        Name : @ord.OrderByUser.FirstName @ord.OrderByUser.LastName
+                                        Address : @ord.Address
                                     </p>
                                 </div>
                             </div>
@@ -82,35 +99,34 @@
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="h4@(acid)">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#c4@(acid)" aria-expanded="false" aria-controls="c4@(acid)">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c4@(acid)" aria-expanded="false" aria-controls="c4@(acid)">
                                 Payment
                             </button>
                         </h2>
-                        <div id="c4@(acid)" class="accordion-collapse collapse" aria-labelledby="h4@(acid)"
-                         data-bs-parent="#c1@{@acid}">
+                        <div id="c4@(acid)" class="accordion-collapse collapse" aria-labelledby="h4@(acid)" data-bs-parent="#c1@{@acid}">
                             <div class="accordion-body">
                                 <table class="table">
                                     <tr>
                                         @{
                                             var Payments = new string[] { "Credit Card", "Debit Card", "Net Banking", "UPI",
-                                                                    "Cash On Delivery" };
+                                                                "Cash On Delivery" };
                                             var PaymentsLba = new string[] { "Card Number", "Card Number", "Bank", "URI",
-                                                                    "Cash On Delivery" };
+                                                                "Cash On Delivery" };
                                             var PaymentsLbb = new string[] { "Expiry", "Expiry", "Account", "@",
-                                                                    "Cash On Delivery" };
+                                                                "Cash On Delivery" };
                                         }
                                         <td>Payment By</td>
-                                        <td>@Payments[(int)ord.Payment]</td>
+                                        <td>@(Payments[(int)ord.Payment])</td>
                                     </tr>
-                                    @if((int)ord.Payment != 5){
+                                    @if ((int)ord.Payment != 5)
+                                    {
                                         <tr>
-                                            <td>@PaymentsLba[(int)ord.Payment]</td>
-                                            <td>@ord.pda]</td>
+                                            <td>@(PaymentsLba[(int)ord.Payment])</td>
+                                            <td>@ord.pda</td>
                                         </tr>
                                         <tr>
-                                                    <td>@PaymentsLbb[(int)ord.Payment]</td>
-                                                    <td>@ord.pdb</td>
+                                            <td>@(PaymentsLbb[(int)ord.Payment])</td>
+                                            <td>@ord.pdb</td>
                                         </tr>
                                     }
                                 </table>

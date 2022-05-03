@@ -26,7 +26,10 @@ namespace Shopee
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(Configuration["database"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.28-mysql"));
+                optionsBuilder.UseMySql(Configuration["database"], Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.28-mysql"), option =>
+                {
+                    option.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                });
                 optionsBuilder.UseLoggerFactory(new LoggerFactory());
             }
         }
@@ -109,7 +112,7 @@ namespace Shopee
 
             #region Order
             modelBuilder.Entity<Order>().HasOne(O => O.Shipping).WithOne(s => s.Order).HasForeignKey<Shipping>(s => s.OrderId);
-            modelBuilder.Entity<Order>().HasMany(o => o.Remarks).WithOne().HasForeignKey(r => r.OrderId);
+            modelBuilder.Entity<Order>().HasMany(o => o.Remarks).WithOne(r => r.Order).HasForeignKey(r => r.OrderId);
             #endregion
 
             #region Order Item
@@ -118,7 +121,6 @@ namespace Shopee
             #endregion
 
             #region Shipping
-            modelBuilder.Entity<Shipping>().HasOne(s => s.Order).WithOne(o => o.Shipping).HasForeignKey<Order>(s => s.ShippingId);
             #endregion
 
             #region Remarks
@@ -142,6 +144,8 @@ namespace Shopee
         public DbSet<OrderItem> OrderItems { get; set; }
 
         public DbSet<Shipping> Shippings { get; set; }
+
+        public DbSet<Remarks> OrderRemarks { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

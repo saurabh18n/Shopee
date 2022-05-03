@@ -22,7 +22,6 @@ public class Order
     [Required]
     public DateTime OrderUpdated { get; set; }
 
-    public Guid? ShippingId { get; set; }
     public Shipping Shipping { get; set; }
 
     public Guid? ProcessByUserId { get; set; }
@@ -38,6 +37,6 @@ public class Order
     public string Address { get; set; }
     public double Amount { get; set; }
     public double Tax { get; set; }
-    
+
     public List<Remarks> Remarks { get; set; }
 }

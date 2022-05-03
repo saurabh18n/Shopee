@@ -26,19 +26,10 @@ public class OrderController : Controller
     public async Task<IActionResult> Index()
     {
         return View(await _db.Orders.
-        Where(o => o.OrderByUserId == GetUserId()).Include(o => o.Items).ThenInclude(oi => oi.Product).Select(oo => new Order
-        {
-            Id = oo.Id,
-            Status = oo.Status,
-            OrderTime = oo.OrderTime,
-            OrderUpdated = oo.OrderUpdated,
-            Payment = oo.Payment,
-            pda = oo.pda,
-            pdb = oo.pdb,
-            Address = oo.Address,
-            Items = oo.Items
-        }
-        )
+        Where(o => o.OrderByUserId == GetUserId())
+        .Include(o => o.Items).ThenInclude(oi => oi.Product)
+        .Include(o => o.OrderByUser)
+        .OrderBy(o => o.OrderTime)
         .ToListAsync());
     }
 
@@ -60,10 +51,7 @@ public class OrderController : Controller
     [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> o([FromRoute] Guid Id)
     {
-        Order? ord = await _db.Orders
-        .Include(O => O.OrderByUser)
-        .Include(o => o.Items).ThenInclude(oi => oi.Product)
-        .FirstOrDefaultAsync(o => o.Id == Id);
+        Order? ord = await getSingleOrder(Id);
         if (ord != null)
         {
             return View(ord);
@@ -129,18 +117,17 @@ public class OrderController : Controller
         }
     }
 
-    [HttpPost, Authorize(Roles = Roles.Admin), ValidateAntiForgeryToken]
+
+    [Authorize(Roles = Roles.Admin), ValidateAntiForgeryToken]
     public async Task<IActionResult> Update([FromRoute] Guid Id, [FromForm] string remark, [FromForm] OrderStatus orderstatus, [FromForm] ShippingType shipping, [FromForm] string docket)
     {
-
-        Console.WriteLine($"Update called{remark}");
-
+        Console.WriteLine($"remark - > {remark}");
         Order? ord = await getSingleOrder(Id);
         if (ord == null) return Ok("Order Not Found");
 
         if (!string.IsNullOrEmpty(remark))
         {
-            ord.Remarks.Add(new Remarks
+            _db.OrderRemarks.Add(new Remarks()
             {
                 Id = Guid.NewGuid(),
                 Text = remark,
@@ -152,7 +139,7 @@ public class OrderController : Controller
 
         if (!string.IsNullOrEmpty(docket))
         {
-            ord.Shipping = new Shipping()
+            Shipping ns = new Shipping()
             {
                 Id = Guid.NewGuid(),
                 OrderId = ord.Id,
@@ -160,24 +147,30 @@ public class OrderController : Controller
                 Carrier = "",
                 Docket = docket
             };
-
+            ord.Shipping = ns;
+            _db.Shippings.Add(ns);
+            ord.Shipping = ns;
         }
-
+        ord.Status = orderstatus;
         ord.OrderUpdated = DateTime.Now;
         ord.ProcessByUserId = GetUserId();
         await _db.SaveChangesAsync();
+
         return View("o", await getSingleOrder(Id));
 
     }
 
     private async Task<Order?> getSingleOrder(Guid Id)
     {
-        return await _db.Orders
+        Order? Order = await _db.Orders
         .Include(o => o.OrderByUser)
         .Include(o => o.Shipping)
         .Include(o => o.Items).ThenInclude(oi => oi.Product)
-        .Include(o => o.Remarks)
+        .Include(o => o.Remarks).ThenInclude(r => r.ByUser)
         .FirstOrDefaultAsync(o => o.Id == Id);
+
+        Console.WriteLine("Hello");
+        return Order;
     }
 
     private Guid GetUserId()

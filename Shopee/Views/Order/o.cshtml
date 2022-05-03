@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "Manage Order";
     var Payments = new string[] { "Credit Card", "Debit Card", "Net Banking", "UPI", "Cash On Delivery" };
-    var PaymentsLba = new string[] { "Card Number", "Card Number", "Bank", "URI", "Cash On Delivery" };
-    var PaymentsLbb = new string[] { "Expiry", "Expiry", "Account", "@", "Cash On Delivery" };
+    var PaymentsLba = new string[] { "Card Number", "Card Number", "Bank", "URI", "" };
+    var PaymentsLbb = new string[] { "Expiry", "Expiry", "Account", "@", "" };
 }
 @section Styles{
 <style>
@@ -22,57 +22,57 @@
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto">
         <div name="details-buttons" class="row flex-row justify-content-left px-2">
             <div class="col-auto px-0 me-1">
-                <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-order" role="button">Order</a>
+                <a class="btn btn-primary cb" data-bs-toggle="collapse" href="#d-order" role="button">Order</a>
             </div>
             <div class="col-auto px-0 me-1">
-                <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-customer" role="button">Customer</a>
+                <a class="btn btn-primary cb" data-bs-toggle="collapse" href="#d-customer" role="button">Customer</a>
             </div>
             <div class="col-auto px-0 me-1">
-                <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-payment" role="button"">Payment</a>
+                <a class="btn btn-primary cb" data-bs-toggle="collapse" href="#d-payment" role="button">Payment</a>
             </div>
             <div class=" col-auto px-0 me-1">
-                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-items" role="button"">Items</a>
+                <a class="btn btn-primary cb" data-bs-toggle="collapse" href="#d-items" role="button">Items</a>
             </div>
             <div class=" col-auto px-0 me-1">
-                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#d-remarks" role="button"">Remarks</a>
+                <a class="btn btn-primary cb" data-bs-toggle="collapse" href="#d-remarks" role="button">Remarks</a>
             </div>
         </div>
-        <div name="details-details-divs" class=" row flex-row justify-content-left py-2">
+        <div name=" details-details-divs" class=" row flex-row justify-content-left py-2">
             <div class="collapse show px-0" id="d-order">
-                            <div class="card card-body">
-                                <table class="table table-borderd m-0">
-                                    <tr>
-                                        <td>Order Id</td>
-                                        <td>@Model.Id</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Order Amount</td>
-                                        <td>@Model.Amount</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Order Amount</td>
-                                        <td>@Model.Tax</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Order Status</td>
-                                        <td>@Model.Status</td>
-                                    </tr>
-                                </table>
-                            </div>
+                <div class="card card-body">
+                    <table class="table table-borderd m-0">
+                        <tr>
+                            <td>Order Id</td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td>Order Amount</td>
+                            <td>@Model.Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Order Amount</td>
+                            <td>@Model.Tax</td>
+                        </tr>
+                        <tr>
+                            <td>Order Status</td>
+                            <td>@Model.Status</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="collapse px-0" id="d-customer">
-                            <div class="card card-body">
-                                <table class="table table-borderd m-0">
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>@Model.OrderByUser.FirstName @Model.OrderByUser.LastName</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>@Model.Address</td>
-                                    </tr>
-                                </table>
-                            </div>
+                <div class="card card-body">
+                    <table class="table table-borderd m-0">
+                        <tr>
+                            <td>Name</td>
+                            <td>@($"{Model.OrderByUser.FirstName} {Model.OrderByUser.LastName}")</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>@Model.Address</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="collapse px-0" id="d-payment">
                 <div class="card card-body">
@@ -87,14 +87,14 @@
                         </tr>
                         <tr>
                             <td>Payment Type</td>
-                            <td>@Payments[(int)@Model.Payment]</td>
+                            <td>@(Payments[(int)Model.Payment])</td>
                         </tr>
                         <tr>
-                            <td>@PaymentsLba[(int)@Model.Payment]</td>
+                            <td>@(PaymentsLba[(int)Model.Payment])</td>
                             <td>@Model.pda</td>
                         </tr>
                         <tr>
-                            <td>@PaymentsLbb[(int)@Model.Payment]</td>
+                            <td>@(PaymentsLbb[(int)Model.Payment])</td>
                             <td>@Model.pdb</td>
                         </tr>
                     </table>
@@ -109,67 +109,78 @@
                             <td>Avaibility</td>
                             <td>Quantity</td>
                         </tr>
-                        @{
-                            int index = 1;
-                        }
+
                         @foreach (OrderItem item in Model.Items)
-                        {                                        
+                        {
                             <tr>
-                                <td>@index</td>
+                                <td>@Model.Items.IndexOf(item) + 1</td>
                                 <td>@item.Product.Title</td>
                                 <td>@item.Product.StoreQty</td>
                                 <td>@item.Quantity</td>
                             </tr>
-                            index++;
                         }
-                                </table>
-                            </div>
+                    </table>
+                </div>
             </div>
             <div class="collapse px-0" id="d-remarks">
                 <div class="card card-body">
-                    <p>Remakrs</p>
+                    <table class="table table-borderd m-0">
+                        <tr>
+                            <td>By</td>
+                            <td>Time</td>
+                            <td>Remark</td>
+                        </tr>
+                        @foreach (Remarks rm in Model.Remarks)
+                        {
+                            <tr>
+                                <td>@rm.ByUser.FirstName</td>
+                                <td>@rm.TimeStamp</td>
+                                <td>@rm.Text</td>
+                            </tr>
+                        }
+                    </table>
                 </div>
             </div>
         </div>
-        <div name="order-actions" class="row flex-row justify-content-left px-2">
-            <div class="col-auto">                
+        <div name=" order-actions" class="row flex-row justify-content-left px-2">
+            <div class="col-auto">
                 <div class="row flex-grow-0">
                     <div class="col-auto px-0 me-1 my-2">
                         <form method="get" asp-action="acc" asp-controller="order" asp-route-Id="@Model.Id">
                             <button id="btn-accept" type="submit" class="btn btn-success" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Accept</button>
                         </form>
                     </div>
-                   <div class="col-auto px-0 me-1 my-2">
+                    <div class="col-auto px-0 me-1 my-2">
                         <form method="get" asp-action="rej" asp-controller="order" asp-route-Id="@Model.Id">
-                            <button id="btn-reject"  type="submit" class="btn btn-danger" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Reject</button>
+                            <button id="btn-reject" type="submit" class="btn btn-danger" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Reject</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-auto">
-                <form class="row" method="post" asp-action="update" asp-controller="order" asp-route-Id="@Model.Id" >
-                     <div class="col-auto px-0 me-1 my-2">
+                <form class="row" method="post" asp-action="Update" asp-route-id="@Model.Id">
+                    <div class="col-auto px-0 me-1 my-2">
                         @Html.DropDownList("orderstatus", new SelectList(Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>(), Model.Status),htmlAttributes:new{@class="form-select"})
                     </div>
                     <div class="col-auto px-0 me-1 my-2">
                         @Html.DropDownList("shipping", new SelectList(Enum.GetValues(typeof(ShippingType)).Cast<ShippingType>(),selectedValue: (Model.Shipping?.ShippingType ?? ShippingType.IndiaPost)),htmlAttributes:new{@class="form-select"})
                     </div>
                     <div class="col-auto px-0 me-1 my-2">
-                        <input class="form-control" type="text" id="docket" name="docket" placeholder="#Docket" "@(Model.Status == OrderStatus.Pending ? "disabled" : "")"></input>
+                        <input class="form-control" type="text" id="docket" name="docket" placeholder="#Docket" autocomplete="off" "@(Model.Status == OrderStatus.Pending ? "disabled" : "")"></input>
                     </div>
                     <div class="col-auto px-0 me-1 my-2">
-                        <input class="form-control" type="text" id="remark" name="remark" placeholder="Remark" "@(Model.Status == OrderStatus.Cancelled ? "disabled" : "")"></input>
+                        <input class="form-control" type="text" id="remark" name="remark" placeholder="Remark" autocomplete="off" "@(Model.Status == OrderStatus.Cancelled ? "disabled" : "")"></input>
                     </div>
                     <div class="col-auto px-0 me-1 my-2">
-                        <button id="btn-reject" type="submit" class="btn btn-primary" role="button" "@(Model.Status == @OrderStatus.Cancelled ? "disabled" : "")" >Update</button>
-                    </div> 
+                        <button id="btn-reject" type="submit" class="btn btn-primary" role="button" "@(Model.Status == @OrderStatus.Cancelled ? "disabled" : "")">Update</button>
+                    </div>
                 </form>
-            </div>           
+            </div>
         </div>
     </div>
 </div>
 @section Scripts{
-    <script type=" text/javascript">
-        $('.btn-primary').on('click', function () { $('.collapse').collapse('hide'); })
+<script type=" text/javascript">
+        $('.cb').on('click', function () { $('.collapse').collapse('hide'); })
     </script>
-    }
+}
