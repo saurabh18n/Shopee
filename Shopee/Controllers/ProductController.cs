@@ -97,6 +97,7 @@ public class ProductController : Controller
 
     public async Task<IActionResult> ManageProducts()
     {
+        ViewBag.Categories = await _db.Categories.ToListAsync();
         List<Product> prod = await _db.Products
         .Include(p => p.Category).ThenInclude(p => p.ParentCategory)
         .Take(10).ToListAsync();
