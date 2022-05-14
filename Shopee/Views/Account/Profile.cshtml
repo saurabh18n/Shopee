@@ -1,6 +1,6 @@
 @model User
 @{
-ViewData["Title"] = "Account";
+    ViewData["Title"] = "Account";
 }
 <div class="row">
     <div class="col-xl-6 col-lg-6 col-12 mx-auto border">
@@ -26,16 +26,215 @@ ViewData["Title"] = "Account";
                     <input class="form-control" id="firstName" name="firstName" type="text" value="@Model.FirstName" autocomplete="off" />
                 </div>
                 <div class="form-group">
-                    <label for="LastName">First Name</label>
+                    <label for="LastName">Last Name</label>
                     <input class="form-control" id="LastName" name="LastName" type="text" value="@Model.LastName" autocomplete="off" />
                 </div>
-                <div class="form-group">
-                    <button type="button">U</button>
+                <div class="form-group text-end">
+                    <button id="btn-basic" type="submit" class="btn btn-primary m-2" style="width: 105px;" role="button">
+                        <div class="load d-none">
+                            <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                            <span class="pe-none">Updating...</span>
+                        </div>
+                        <div class="n-load pe-none">
+                            <span class="pe-none">Update</span>
+                        </div>
+                    </button>
                 </div>
             </div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
-            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <div class="form-group">
+                    <label for="oldpassword">Old Password</label>
+                    <input class="form-control" id="oldpassword" name="oldpassword" type="password" autocomplete="off" required />
+                </div>
+                <div class="form-group">
+                    <label for="newpassword">New Password</label>
+                    <input class="form-control" id="newpassword" name="newpassword" type="password" autocomplete="off" required />
+                </div>
+                <div class="form-group">
+                    <label for="newpasswordre">New Password Again</label>
+                    <input class="form-control" id="newpasswordre" name="newpasswordre" type="password" autocomplete="off" required />
+                </div>
+                <div class="form-group text-end">
+                    <button type="button" id="btn-password" class="btn btn-primary my-2 mx-auto">
+                        <div class="load d-none">
+                            <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                            <span class="pe-none">Updating...</span>
+                        </div>
+                        <div class="n-load pe-none">
+                            <span class="pe-none">Change Password</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" id="email" name="email" type="email" value="@Model.Email" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input class="form-control" id="phone" name="phone" type="number" step="1" value="@Model.ContactNumber" autocomplete="off" />
+                </div>
+                <div class="form-group text-end">
+                    <button id="btn-contact" type="submit" class="btn btn-primary m-2" style="width: 105px;" role="button">
+                        <div class="load d-none">
+                            <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                            <span class="pe-none">Updating...</span>
+                        </div>
+                        <div class="n-load pe-none">
+                            <span class="pe-none">Update</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+                <div class="form-group">
+                    <label for="phone">Address</label>
+                    <textarea id="address" rows="5" style="height: 150px;" class="form-control" id="address" name="address" autocomplete="off">@Model.Address</textarea>
+                </div>
+                <div class="form-group text-end">
+
+                    <button id="btn-address" type="submit" class="btn btn-primary m-2" style="width: 105px;" role="button">
+                        <div class="load d-none">
+                            <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                            <span class="pe-none">Updating...</span>
+                        </div>
+                        <div class="n-load pe-none">
+                            <span class="pe-none">Update</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+@section Scripts{
+<script type="text/javascript">
+    $('#btn-basic').on('click', (e) => {
+        if ($("#firstName").val() === '' || $("#LastName").val() === '') {
+            showMessage('Please Input First and Last Name', 'ERROR');
+            return;
+        } else {
+            $(e.target).find('div.load').toggleClass('d-none');
+            $(e.target).find('div.n-load').toggleClass('d-none');
+            $.ajax({
+                url: '@Url.Action("update")',
+                method: 'POST',
+                contenttype: 'application/json',
+                data: {
+                    fname: $("#firstName").val(),
+                    lname: $("#LastName").val()
+                },
+                success: (data) => {
+                    $(e.target).find('div.load').toggleClass('d-none');
+                    $(e.target).find('div.n-load').toggleClass('d-none');
+                    if (data.success) {
+                        showMessage(data.message, 'SUCCESS');
+                    } else {
+                        showMessage(data.message, 'ERROR');
+                    }
+                },
+                error: (err) => {
+                    console.log('error', err);
+                }
+            })
+        }
+    });
+
+    $('#btn-address').on('click', (e) => {
+        if ($("#address").val() === '') {
+            showMessage('Please Input address', 'ERROR')
+        } else {
+
+            $(e.target).find('div.load').toggleClass('d-none');
+            $(e.target).find('div.n-load').toggleClass('d-none');
+
+            $.ajax({
+                url: '@Url.Action("update")',
+                method: 'POST',
+                data: { address: $("#address").val() },
+                success: (data) => {
+                    $(e.target).find('div.load').toggleClass('d-none');
+                    $(e.target).find('div.n-load').toggleClass('d-none');
+                    if (data.success) {
+                        showMessage(data.message, 'SUCCESS');
+                    } else {
+                        showMessage(data.message, 'ERROR');
+                    }
+                },
+                error: (err) => {
+                    console.log('error', err);
+                }
+            })
+        }
+    });
+
+    $('#btn-password').on('click', (e) => {
+        if ($("#oldpassword").val() === '' || $("#newpassword").val() === '' || $("#newpasswordre").val() === '') {
+            showMessage('Please Input Passwords', 'ERROR');
+            return;
+        } else if ($("#newpassword").val() !== $("#newpasswordre").val()) {
+            showMessage('New password and confirm password do not match', 'ERROR');
+            return;
+        } else {
+            $(e.target).find('div.load').toggleClass('d-none');
+            $(e.target).find('div.n-load').toggleClass('d-none');
+            $.ajax({
+                url: '@Url.Action("update")',
+                method: 'POST',
+                contenttype: 'application/json',
+                data: {
+                    password: $("#oldpassword").val(),
+                    newpass: $("#newpasswordre").val()
+                },
+                success: (data) => {
+                    $(e.target).find('div.load').toggleClass('d-none');
+                    $(e.target).find('div.n-load').toggleClass('d-none');
+                    if (data.success) {
+                        showMessage(data.message, 'SUCCESS');
+                    } else {
+                        showMessage(data.message, 'ERROR');
+                    }
+                },
+                error: (err) => {
+                    console.log('error', err);
+                }
+            })
+        }
+    });
+
+    $('#btn-contact').on('click', (e) => {
+        if ($("#email").val() === '' || $("#phone").val() === '') {
+            showMessage('Please Input email and phone', 'ERROR');
+            return;
+        } else {
+            $(e.target).find('div.load').toggleClass('d-none');
+            $(e.target).find('div.n-load').toggleClass('d-none');
+            $.ajax({
+                url: '@Url.Action("update")',
+                method: 'POST',
+                contenttype: 'application/json',
+                data: {
+                    email: $("#email").val(),
+                    phone: $("#phone").val()
+                },
+                success: (data) => {
+                    $(e.target).find('div.load').toggleClass('d-none');
+                    $(e.target).find('div.n-load').toggleClass('d-none');
+                    if (data.success) {
+                        showMessage(data.message, 'SUCCESS');
+                    } else {
+                        showMessage(data.message, 'ERROR');
+                    }
+                },
+                error: (err) => {
+                    console.log('error', err);
+                }
+            })
+        }
+    });
+
+
+
+</script>
+}

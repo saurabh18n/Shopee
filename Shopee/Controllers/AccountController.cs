@@ -116,6 +116,53 @@ public class AccountController : Controller
         return View(usr);
     }
 
+    [HttpPost, Authorize]
+    public async Task<IActionResult> Update(string address, string password, string newpass, string email, string phone, string fname, string lname)
+    {
+        string message = "";
+        User usr = _DB.Users.First(u => u.Id == Guid.Parse(User.Identity.Name));
+        if (usr == null)
+        {
+            return Ok(new { success = true, message = "User not found" });
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(address))
+            {
+                usr.Address = address;
+
+            }
+            if (!string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(newpass))
+            {
+                if (password == usr.Password)
+                {
+                    usr.Password = newpass;
+                }
+                else
+                {
+                    message = "Old Password do not match ";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(phone))
+            {
+                usr.ContactNumber = phone;
+                usr.Email = email;
+            }
+
+
+            if (!string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname))
+            {
+                usr.FirstName = fname;
+                usr.LastName = lname;
+            }
+
+
+            await _DB.SaveChangesAsync();
+            return Ok(new { success = message == "" ? true : false, message = message == "" ? "Updated Successfully" : message });
+        }
+    }
+
 
     public IActionResult Noaccess()
     {

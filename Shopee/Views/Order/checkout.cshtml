@@ -78,8 +78,7 @@
                 <div class="col-12 d-none" id="paymentDetailscontainer">
                     <div class="row my-2">
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                            <label id="payment-detail-1-label" for="payment-detail-1"
-                                class="col-12 col-form-label">Payment Method</label>
+                            <label id="payment-detail-1-label" for="payment-detail-1" class="col-12 col-form-label">Payment Method</label>
                         </div>
                         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                             <input type="text" id="payment-detail-1" name="pda" class="form-control">
@@ -87,8 +86,7 @@
                     </div>
                     <div class="row my-2">
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                            <label id="payment-detail-2-label" for="payment-detail-2"
-                                class="col-12 col-form-label">Payment Method</label>
+                            <label id="payment-detail-2-label" for="payment-detail-2" class="col-12 col-form-label">Payment Method</label>
                         </div>
                         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                             <input type="text" id="payment-detail-2" name="pdb" class="form-control">
@@ -100,16 +98,13 @@
             <div class="row flex-row justify-content-between my-3 py-2 border">
                 <legend class="section-legend">Address</legend>
                 <div class="form-floating">
-                    <textarea class="form-control" id="address" name="address" rows="4" placeholder="m"
-                        style="height:150px;" required></textarea>
+                    <textarea class="form-control" id="address" name="address" rows="4" placeholder="m" style="height:150px;" required>@ViewBag.OrderUser.Address</textarea>
                     <label class="ms-2" for="address">Address</label>
                 </div>
             </div>
 
             <div class="row flex-row flex-row-reverse">
-                <button type="submit" class="btn btn-primary mx-2 my-2 @(Model.Count>0?"":"disabled")"
-                    style="width: 120px;pointer-events:@(Model.Count>0?"all":"none")" asp-action="checkout"
-                    asp-controller="order">Place Order</button>
+                <button type="submit" class="btn btn-primary mx-2 my-2 @(Model.Count>0?"":"disabled")" style="width: 120px;pointer-events:@(Model.Count>0?"all":"none")" asp-action="checkout" asp-controller="order">Place Order</button>
                 @* onclick="return validateOrder();" *@
                 <a class="btn btn-danger mx-2 my-2" style="width: 120px;" asp-action="index" asp-controller="cart">Back
                     to Cart</a>

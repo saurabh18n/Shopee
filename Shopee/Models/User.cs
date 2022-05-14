@@ -29,4 +29,5 @@ public class User
     [Required]
     public bool IsActive { get; set; }
 
+    public string? Address { get; set; }
 }

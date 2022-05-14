@@ -36,6 +36,7 @@ public class OrderController : Controller
     [Authorize]
     public async Task<IActionResult> Checkout()
     {
+        ViewBag.OrderUser = await _db.Users.FindAsync(Guid.Parse(User.Identity.Name));
         return View(await _db.CartItems.Where(CI => CI.UserId == GetUserId()).Include(ci => ci.Product).ToListAsync());
     }
 

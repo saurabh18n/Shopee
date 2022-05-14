@@ -17,8 +17,7 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
-                    <input asp-for="FirstName" class="form-control" placeholder="First Name" required
-                        autocomplete="off" />
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" required autocomplete="off" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
@@ -34,16 +33,20 @@
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
-                    <input asp-for="ContactNumber" class="form-control" placeholder="Number" required autocomplete="off"
-                        pattern="[0-9]{10}" />
+                    <input asp-for="ContactNumber" class="form-control" placeholder="Number" required autocomplete="off" pattern="[0-9]{10}" />
                     <span asp-validation-for="ContactNumber" class="text-danger"></span>
                 </div>
+
+                <div class="form-group mb-2">
+                    <textarea asp-for="Address" class="form-control" placeholder="Address" required autocomplete="off"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
                 <div class="form-group mb-2">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
             </form>
-            <div class="alert alert-danger mx-auto mt-3 text-center @(string.IsNullOrEmpty((string)ViewBag.ErrorMessage) ? "d-none" : "")"
-                style="width: 800px;" role="alert">
+            <div class="alert alert-danger mx-auto mt-3 text-center @(string.IsNullOrEmpty((string)ViewBag.ErrorMessage) ? "d-none" : "")" style="width: 800px;" role="alert">
                 <p class="mx-auto my-auto p-0">@ViewBag.ErrorMessage</p>
             </div>
         </div>
