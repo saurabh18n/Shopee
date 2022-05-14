@@ -95,7 +95,7 @@ public class ProductController : Controller
     }
 
 
-    public async Task<IActionResult> ManageProducts()
+    public async Task<IActionResult> Manage()
     {
         ViewBag.Categories = await _db.Categories.ToListAsync();
         List<Product> prod = await _db.Products
@@ -125,6 +125,50 @@ public class ProductController : Controller
         _db.ProductImages.Remove(pi);
         await _db.SaveChangesAsync();
         return Ok(new { success = true, message = "delete successfully" });
+    }
+
+    [HttpPost, Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> AddQuantity(Guid Id, int quantity)
+    {
+        Product? prod = _db.Products.Find(Id);
+        if (prod == null)
+        {
+            return Json(new { success = false, message = "Not Found" });
+        }
+        else
+        {
+            prod.StoreQty += quantity;
+            await _db.SaveChangesAsync();
+            return Json(new { success = true, message = "Quantity Updated Successfully" });
+        }
+    }
+
+
+    [Authorize(Roles = Roles.Admin), HttpPost]
+    public async Task<IActionResult> Update(Guid Id, Product prod, IFormFile mainimage, List<IFormFile> ImageFiles)
+    {
+
+        prod.AddedById = Guid.Parse(User?.Identity?.Name ?? (new Guid()).ToString());
+        foreach (var imageFile in ImageFiles)
+        {
+            ProductImages pd = new ProductImages()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = prod.Id
+            };
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.CopyToAsync(memoryStream);
+                if (memoryStream.Length < 2097152)
+                {
+                    pd.Image = memoryStream.ToArray();
+                }
+            }
+            _db.ProductImages.Add(pd);
+        }
+        _db.Products.Update(prod);
+        await _db.SaveChangesAsync();
+        return RedirectToAction("ManageProducts");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

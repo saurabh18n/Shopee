@@ -29,6 +29,7 @@
                 </button>
             </div>
         </div>
+        @if(!Context.User.IsInRole(Roles.Admin)){
         <div class="row justify-content-center align-content-center mt-2">
             <div class="col-auto">
                 <div class="input-group">
@@ -54,6 +55,7 @@
                 </button>
             </div>
         </div>
+        }
     </div>
     <div class=" col-sm-12 col-md-8">
         <h5 class="">@Model.Title</h5>
@@ -68,7 +70,7 @@
             </tr>
             <tr>
                 <td>Avaibility</td>
-                <td>@Model.StoreQty</td>
+                <td>@(Context.User.IsInRole(Roles.Admin)? Model.StoreQty:  Model.StoreQty >0?"Available":"Out of Stock" )</td>
             </tr>
             <tr>
                 <td>Price</td>

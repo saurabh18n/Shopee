@@ -2,6 +2,56 @@
 @{
     ViewData["Title"] = "Orders";
 }
+
+
+<form class="row g-3">
+    <input type="hidden" name="search" value="@Context.Request.Query["search"]" />
+    <div class="col-auto">
+        <select class="form-select" name="cat">
+            @foreach (ProductCategory cat in ViewBag.Categories)
+            {
+                @if (Context.Request.Query["cat"].Count > 0)
+                {
+                    if (Context.Request.Query["cat"][0] == cat.Category)
+                    {
+                        <option value="@cat.Category" selected>@cat.Category</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.Category">@cat.Category</option>
+                    }
+
+
+                }
+                else if (Context.Request.Query["cat"].Count == 0)
+                {
+                    if (cat.Category == "All")
+                    {
+                        <option value="@cat.Category" selected>@cat.Category</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.Category">@cat.Category</option>
+
+
+                    }
+                }
+
+            }
+        </select>
+    </div>
+    <div class="col-1">
+        <input type="number" class="form-control" step="0.01" name="min" value="0" />
+    </div>
+    <div class="col-1">
+        <input type="number" class="form-control" step="0.01" name="max" value="99999" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">
+            Filter
+        </button>
+    </div>
+</form>
 <div class="row px-3">
     <table class="table table-borderd table-hover">
         <tr>
@@ -21,17 +71,96 @@
                 <td>@Ord.Amount</td>
                 <td>@Ord.Status</td>
                 <td>
-                    <button class="btn btn-danger" disabled="@(Ord.Status != OrderStatus.Pending)">
-                        Reject
-                    </button>
-                    <button href="" class="btn btn-success mx-2" disabled="@(Ord.Status != OrderStatus.Pending)">
-                        Accept
-                    </button>
-                    <a asp-action="o" asp-controller="order" asp-route-Id="@Ord.Id" class="btn btn-primary">View</a>
+                   <button type="submit" class="btn btn-success btn-accept" style="width: 105px;" role="button" disabled="@(Ord.Status != OrderStatus.Pending)" data-id="@Ord.Id">
+                            <div class="load d-none">
+                                <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                                <span class="pe-none">Saving...</span>
+                            </div>
+                            <div class="n-load pe-none">
+                                <span class="pe-none">Accept</span>
+                            </div>
+                        </button>
+                      <button type="submit" class="btn btn-danger btn-reject" style="width: 105px;" role="button" disabled="@(Ord.Status != OrderStatus.Pending)" data-id="@Ord.Id">
+                            <div class="load d-none">
+                                <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                                <span class="pe-none">Saving...</span>
+                            </div>
+                            <div class="n-load pe-none">
+                                <span class="pe-none">Reject</span>
+                            </div>
+                        </button>
 
+                    <a asp-action="o" asp-controller="order" asp-route-Id="@Ord.Id" class="btn btn-primary">View</a>
                 </td>
             </tr>
         }
-
     </table>
 </div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+           $('.btn-accept').on('click', (e) => {
+        e.preventDefault();
+        let orderId = $(e.target).data('id');
+        $(e.target).find('div.load').toggleClass('d-none');
+        $(e.target).find('div.n-load').toggleClass('d-none');
+
+        $.ajax({
+            url: '@Url.Action("accept")' + '/' + orderId,
+            success: (data) => {
+                $(e.target).find('div.load').toggleClass('d-none');
+                $(e.target).find('div.n-load').toggleClass('d-none');
+                if (data.success) {
+                    $(`.btn[data-id="${orderId}"]`).prop('disabled', true);
+                } else {
+                    var message = data.message;
+                    if (data.message == 'NO-CONTINUE') {
+                        message = document.createElement('div');
+                        $(message).append('<p>Order can not continue. Following items are not available in store</p>');
+                        itemTable = document.createElement('table');
+                        itemTable.classList.add('table','text-left','border');
+                        $(itemTable).append('<tr><th class="border text-left">Item</th><th class="border">Order</th><th class="border">Available</th></tr>');
+                        data.data.forEach(item => {
+                            $(itemTable).append(`<tr>
+                                    <td class="border text-left">${item.title}</td>
+                                    <td class="border">${item.order}</td>
+                                    <td class="border">${item.available}</td>
+                                </tr>`);
+                        });
+                        $(message).append(itemTable);
+                    }
+                    showMessage(message, 'ERROR');
+                }
+            },
+            error: (err) => {
+                console.log('error', err);
+            }
+        })
+
+    });
+
+    $('.btn-reject').on('click', (e) => {
+        e.preventDefault();
+        let orderId = $(e.target).data('id');
+        $(e.target).find('div.load').toggleClass('d-none');
+        $(e.target).find('div.n-load').toggleClass('d-none');
+
+        $.ajax({
+            url: '@Url.Action("reject")' + '/' + orderId,
+            success: (data) => {
+                $(e.target).find('div.load').toggleClass('d-none');
+                $(e.target).find('div.n-load').toggleClass('d-none');
+                if (data.success) {
+                    $(`.btn[data-id="${orderId}"]`).prop('disabled', true);
+                } else {                  
+                    showMessage(message, 'ERROR');
+                }
+            },
+            error: (err) => {
+                console.log('error', err);
+            }
+        })
+    });
+    </script>
+}

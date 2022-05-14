@@ -146,14 +146,26 @@
             <div class="col-auto">
                 <div class="row flex-grow-0">
                     <div class="col-auto px-0 me-1 my-2">
-                        <form method="get" asp-action="acc" asp-controller="order" asp-route-Id="@Model.Id">
-                            <button id="btn-accept" type="submit" class="btn btn-success" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Accept</button>
-                        </form>
+                        <button id="btn-accept" type="submit" class="btn btn-success" style="width: 105px;" role="button" disabled="@(Model.Status != OrderStatus.Pending)" data-id="@Model.Id">
+                            <div class="load d-none">
+                                <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                                <span class="pe-none">Saving...</span>
+                            </div>
+                            <div class="n-load pe-none">
+                                <span class="pe-none">Accept</span>
+                            </div>
+                        </button>
                     </div>
                     <div class="col-auto px-0 me-1 my-2">
-                        <form method="get" asp-action="rej" asp-controller="order" asp-route-Id="@Model.Id">
-                            <button id="btn-reject" type="submit" class="btn btn-danger" role="button" disabled="@(Model.Status != OrderStatus.Pending)">Reject</button>
-                        </form>
+                        <button id="btn-reject" type="submit" class="btn btn-danger" style="width: 105px;" role="button" disabled="@(Model.Status != OrderStatus.Pending)" data-id="@Model.Id">
+                            <div class="load d-none">
+                                <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                                <span class="pe-none">Saving...</span>
+                            </div>
+                            <div class="n-load pe-none">
+                                <span class="pe-none">Reject</span>
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -172,7 +184,7 @@
                         <input class="form-control" type="text" id="remark" name="remark" placeholder="Remark" autocomplete="off" "@(Model.Status == OrderStatus.Cancelled ? "disabled" : "")"></input>
                     </div>
                     <div class="col-auto px-0 me-1 my-2">
-                        <button id="btn-reject" type="submit" class="btn btn-primary" role="button" "@(Model.Status == @OrderStatus.Cancelled ? "disabled" : "")">Update</button>
+                        <button id="submit" type="submit" class="btn btn-primary" role="button" "@(Model.Status == @OrderStatus.Cancelled ? "disabled" : "")">Update</button>
                     </div>
                 </form>
             </div>
@@ -180,7 +192,70 @@
     </div>
 </div>
 @section Scripts{
-<script type=" text/javascript">
-        $('.cb').on('click', function () { $('.collapse').collapse('hide'); })
-    </script>
+<script type="text/javascript">
+    $('.cb').on('click', function () { $('.collapse').collapse('hide'); });
+
+    $('#btn-accept').on('click', (e) => {
+        e.preventDefault();
+        let orderId = $(e.target).data('id');
+        $(e.target).find('div.load').toggleClass('d-none');
+        $(e.target).find('div.n-load').toggleClass('d-none');
+
+        $.ajax({
+            url: '@Url.Action("accept")' + '/' + orderId,
+            success: (data) => {
+                $(e.target).find('div.load').toggleClass('d-none');
+                $(e.target).find('div.n-load').toggleClass('d-none');
+                if (data.success) {
+                    $(`.btn[data-id="${orderId}"]`).prop('disabled', true);
+                } else {
+                    var message = data.message;
+                    if (data.message == 'NO-CONTINUE') {
+                        message = document.createElement('div');
+                        $(message).append('<p>Order can not continue. Following items are not available in store</p>');
+                        itemTable = document.createElement('table');
+                        itemTable.classList.add('table','text-left','border');
+                        $(itemTable).append('<tr><th class="border text-left">Item</th><th class="border">Order</th><th class="border">Available</th></tr>');
+                        data.data.forEach(item => {
+                            $(itemTable).append(`<tr>
+                                    <td class="border text-left">${item.title}</td>
+                                    <td class="border">${item.order}</td>
+                                    <td class="border">${item.available}</td>
+                                </tr>`);
+                        });
+                        $(message).append(itemTable);
+                    }
+                    showMessage(message, 'ERROR');
+                }
+            },
+            error: (err) => {
+                console.log('error', err);
+            }
+        })
+
+    });
+
+    $('#btn-reject').on('click', (e) => {
+        e.preventDefault();
+        let orderId = $(e.target).data('id');
+        $(e.target).find('div.load').toggleClass('d-none');
+        $(e.target).find('div.n-load').toggleClass('d-none');
+
+        $.ajax({
+            url: '@Url.Action("reject")' + '/' + orderId,
+            success: (data) => {
+                $(e.target).find('div.load').toggleClass('d-none');
+                $(e.target).find('div.n-load').toggleClass('d-none');
+                if (data.success) {
+                    $(`.btn[data-id="${orderId}"]`).prop('disabled', true);
+                } else {                  
+                    showMessage(message, 'ERROR');
+                }
+            },
+            error: (err) => {
+                console.log('error', err);
+            }
+        })
+    });
+</script>
 }

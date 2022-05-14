@@ -39,7 +39,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" asp-action="Manage" asp-controller="Order">List</a></li>
-                                <li><a class="dropdown-item" asp-action="Create" asp-controller="Product">Add</a></li>
+                                <li><a class="dropdown-item" asp-action="Create" asp-controller="Order">Add</a></li>
                             </ul>
                         </li>
 
@@ -48,7 +48,7 @@
                                 Product
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-action="ManageProducts" asp-controller="Product">List</a></li>
+                                <li><a class="dropdown-item" asp-action="Manage" asp-controller="Product">Products</a></li>
                                 <li><a class="dropdown-item" asp-action="Create" asp-controller="Product">Add</a></li>
                             </ul>
                         </li>
@@ -73,6 +73,9 @@
                                     @User?.FindFirst(c=> c.Type=="FName")?.Value
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="logout">Logout</a>
                                     </li>
@@ -103,12 +106,16 @@
 <script type="text/javascript">
     function showMessage(message, type = "SUCCESS") {
         $('#DialogModelTitle').text(type === "SUCCESS" ? "Success" : "Error")
-        $('#DialogModelText').text(message);
+
+        if (typeof message === 'string') {
+            $('#DialogModelText').text(message);
+        } else {
+            $('#DialogModelText').html(message);
+        }
         if (type === "SUCCESS") {
             $('#DialogModelIcon').addClass('bi-check-circle-fill');
             $('#DialogModelIcon').css({ 'color': '#A5F64F' })
         } else {
-            console.log('elase part', type)
             $('#DialogModelIcon').addClass('bi-x-circle-fill');
             $('#DialogModelIcon').css({ 'color': '#E96347' });
         }

@@ -1,0 +1,147 @@
+@using Shopee.Models
+@model List<Shopee.Models.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+
+
+    <form class="row g-3 mx-2">
+        <input type="hidden" name="search" value="@Context.Request.Query["search"]" />
+        <div class="col-auto">
+            <select class="form-select" name="cat">
+                @foreach (ProductCategory cat in ViewBag.Categories)
+                {
+                    @if (@Context.Request.Query["cat"].Count > 0)
+                    {
+                        if (@Context.Request.Query["cat"][0] == cat.Category)
+                        {
+                            <option value="@cat.Category" selected>@cat.Category</option>
+                        }
+                        else
+                        {
+                            <option value="@cat.Category">@cat.Category</option>
+                        }
+
+                    }
+                    else if (@Context.Request.Query["cat"].Count == 0)
+                    {
+                        if (cat.Category == "All")
+                        {
+                            <option value="@cat.Category" selected>@cat.Category</option>
+                        }
+                        else
+                        {
+                            <option value="@cat.Category">@cat.Category</option>
+
+
+                        }
+                    }
+
+                }
+            </select>
+        </div>
+        <div class="col-1">
+            <input type="number" class="form-control" step="0.01" name="min" value="0" />
+        </div>
+        <div class="col-1">
+            <input type="number" class="form-control" step="0.01" name="max" value="99999" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+                Filter
+            </button>
+        </div>
+    </form>
+    <div class="row mx-2">
+    <table class="table table-sm table-border" id="products">
+        <tr>
+            <th>
+                Category
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Available
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+        @foreach (Product item in Model)
+        {
+            <tr class="search-row">
+                <td>@(item.Category?.ParentCategory?.Category) @item.Category?.Category</td>
+                <td>@item.Title</td>
+                <td>@item.Desc</td>
+                <td>@item.StoreQty</td>
+                <td>@item.UnitPrice</td>
+                <td>
+                    <a class="btn btn-primary" asp-action="edit" asp-route-Id="@item.Id" title="Edit Item">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </td>
+
+                <td>
+                    <a class="btn btn-primary" asp-action="p" asp-route-Id="@item.Id"  title="View">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-primary btn-addq" data-id="@item.Id" title="Add Quantity">
+                        <i class="bi bi-plus-square pe-none"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+    </div>
+@section Scripts{
+<script type="text/javascript">
+    jQuery.expr[':'].icontains = function (a, i, m) {
+        return jQuery(a).text().toLowerCase()
+            .indexOf(m[3].toLowerCase()) >= 0;
+    };
+    $('#search').on('keyup', function () {
+        var search = $(this).val().toLowerCase();
+        $("#products tr.search-row").show();
+        if (search !== '') {
+            $(`#products tr.search-row:not(:icontains("${search}"))`).hide()
+        }
+    });
+    $('.btn-addq').on('click', (e)=> {
+        var id = $(e.target).data('id');
+        var quantity = prompt('Enter Quantity to add');
+        if(isNaN(quantity)){
+            alert('Please enter a valid quantity');
+            return;
+        }
+       $.ajax({
+            url: '@Url.Action("AddQuantity")' + '/' + id,
+            type: 'POST',
+            contenttype : 'application/json',  
+            data: {
+                quantity: parseInt(quantity)
+            },
+            success: (data) => {
+                if(data.success === true){
+                    let intTd =  $(e.target).parent().parent().find('td:nth-child(4)')                    
+                    intTd.text(parseInt(intTd.text()) + parseInt(quantity));       
+                }else{
+                    showMessage(data.message, 'ERROR');
+                }
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        })
+    });
+</script>
+}

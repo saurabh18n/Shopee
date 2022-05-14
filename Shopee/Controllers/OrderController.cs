@@ -29,10 +29,9 @@ public class OrderController : Controller
         Where(o => o.OrderByUserId == GetUserId())
         .Include(o => o.Items).ThenInclude(oi => oi.Product)
         .Include(o => o.OrderByUser)
-        .OrderBy(o => o.OrderTime)
+        .OrderByDescending(o => o.OrderTime)
         .ToListAsync());
     }
-
 
     [Authorize]
     public async Task<IActionResult> Checkout()
@@ -45,6 +44,7 @@ public class OrderController : Controller
     [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Manage()
     {
+        ViewBag.Categories = await _db.Categories.Include(c => c.ParentCategory).ToListAsync();
         return View(await _db.Orders.Include(o => o.Items).Include(o => o.OrderByUser).ToListAsync());
     }
 
@@ -63,34 +63,46 @@ public class OrderController : Controller
     }
 
     [Authorize(Roles = Roles.Admin)]
-    public async Task<IActionResult> acc(Guid Id)
+    public async Task<IActionResult> Accept(Guid Id)
     {
         Order? ord = await getSingleOrder(Id);
         if (ord != null)
         {
             if (ord.Status == OrderStatus.Pending)
             {
-                ord.Status = OrderStatus.Processing;
-                ord.OrderUpdated = DateTime.Now;
-                ord.ProcessByUserId = GetUserId();
-                await _db.SaveChangesAsync();
-                return View("o", ord);
+                //checking if sufficient quantity available
+                var failItems = ord.Items.Where(oi => oi.Quantity > oi.Product.StoreQty).Select(oi => new { title = oi.Product.Title, order = oi.Quantity, available = oi.Product.StoreQty }).ToList();
+                if (failItems.Count > 0)
+                {
+                    return Json(new { success = false, message = "NO-CONTINUE", data = failItems });
+                }
+                else
+                {
+                    ord.Status = OrderStatus.Processing;
+                    ord.OrderUpdated = DateTime.Now;
+                    ord.ProcessByUserId = GetUserId();
+                    foreach (OrderItem item in ord.Items)
+                    {
+                        item.Product.StoreQty = item.Product.StoreQty - item.Quantity;
+                    }
+                    await _db.SaveChangesAsync();
+                    return Json(new { success = true, message = "Order accepted successfully" });
+                }
             }
             else
             {
-                Response.StatusCode = 400;
-                return View("o", ord);
+                return Json(new { success = false, message = "Order can not be accepted." });
             }
         }
         else
         {
             Response.StatusCode = 404;
-            return Json("Order Not Found");
+            return Json(new { success = false, message = "Order not found" });
         }
     }
 
     [Authorize(Roles = Roles.Admin)]
-    public async Task<IActionResult> rej(Guid Id)
+    public async Task<IActionResult> Reject(Guid Id)
     {
 
         Order? ord = await getSingleOrder(Id);
@@ -102,18 +114,17 @@ public class OrderController : Controller
                 ord.OrderUpdated = DateTime.Now;
                 ord.ProcessByUserId = GetUserId();
                 await _db.SaveChangesAsync();
-                return View("o", ord);
+                return Json(new { success = true, message = "Order Updated successfully" });
             }
             else
             {
-                Response.StatusCode = 400;
-                return View("o", ord);
+                return Json(new { success = false, message = "Can not update order." });
             }
         }
         else
         {
             Response.StatusCode = 404;
-            return Json("Order Not Found");
+            return Json(new { success = false, message = "Order Not Found" });
         }
     }
 

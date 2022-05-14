@@ -109,6 +109,14 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpGet, Authorize]
+    public IActionResult Profile()
+    {
+        User usr = _DB.Users.First(u => u.Id == Guid.Parse(User.Identity.Name));
+        return View(usr);
+    }
+
+
     public IActionResult Noaccess()
     {
         return View();
