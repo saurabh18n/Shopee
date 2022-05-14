@@ -99,9 +99,32 @@ public class ProductController : Controller
     {
         ViewBag.Categories = await _db.Categories.ToListAsync();
         List<Product> prod = await _db.Products
-        .Include(p => p.Category).ThenInclude(p => p.ParentCategory)
-        .Take(10).ToListAsync();
+        .Include(p => p.Category).ThenInclude(p => p.ParentCategory).ToListAsync();
         return View(prod);
+    }
+
+
+    public async Task<IActionResult> Edit(Guid Id)
+    {
+        Product? prod = await _db.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == Id);
+        List<ProductCategory> catlist = await _db.Categories.Include(c => c.ParentCategory).ToListAsync();
+        if (prod != null)
+        {
+            ViewBag.Categories = catlist;
+            return View(prod);
+        }
+        else
+        {
+            return Ok("Product Not Found");
+        }
+    }
+
+    public async Task<IActionResult> DeleteImage(Guid Id)
+    {
+        var pi = _db.ProductImages.FirstOrDefault(p => p.Id == Id);
+        _db.ProductImages.Remove(pi);
+        await _db.SaveChangesAsync();
+        return Ok(new { success = true, message = "delete successfully" });
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

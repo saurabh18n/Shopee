@@ -21,7 +21,6 @@
                         <option value="@cat.Category">@cat.Category</option>
                     }
 
-
                 }
                 else if (@Context.Request.Query["cat"].Count == 0)
                 {
@@ -52,13 +51,10 @@
         </button>
     </div>
 </form>
-<table class="table table-border">
+<table class="table table-border" id="products">
     <tr>
         <th>
             Category
-        </th>
-        <th>
-            Sub Category
         </th>
         <th>
             Title
@@ -75,13 +71,33 @@
     </tr>
     @foreach (Product item in Model)
     {
-        <tr>
+        <tr class="search-row">
             <td>@(item.Category?.ParentCategory?.Category) @item.Category?.Category</td>
             <td>@item.Title</td>
             <td>@item.Desc</td>
             <td>@item.StoreQty</td>
             <td>@item.UnitPrice</td>
-            <td></td>
+            <td>
+                <a class="btn btn-primary" asp-action="edit" asp-route-Id="@item.Id">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+            </td>
         </tr>
     }
 </table>
+
+@section Scripts{
+<script>
+    jQuery.expr[':'].icontains = function (a, i, m) {
+        return jQuery(a).text().toLowerCase()
+            .indexOf(m[3].toLowerCase()) >= 0;
+    };
+    $('#search').on('keyup', function () {
+        var search = $(this).val().toLowerCase();
+        $("#products tr.search-row").show();
+        if (search !== '') {
+            $(`#products tr.search-row:not(:icontains("${search}"))`).hide()
+        }
+    });
+</script>
+}
