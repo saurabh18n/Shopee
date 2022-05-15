@@ -3,5 +3,27 @@
 }
 
 <div class="row flex-row flex-wrap">
-
+    @{
+        int all = 0;
+    }
+    @foreach (var item in ViewBag.OrderData)
+    {
+        <div class="card ms-3 mt-3" style="width: 200px;">
+            <div class="card-body text-center">
+                <h5 class="card-title">@item.status</h5>
+                <h1>@item.count</h1>
+                @{
+                    all += item.count;
+                }
+            </div>
+        </div>
+    }
+    <div class="card ms-3 mt-3" style="width: 200px;">
+        <div class="card-body text-center">
+            <h5 class="card-title">Total</h5>
+            <h1>@all</h1>
+        </div>
+    </div>
+</div>
+<div class="row flex-row flex-wrap">
 </div>

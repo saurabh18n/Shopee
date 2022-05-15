@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shopee.Models;
 
 namespace Shopee.Controllers;
@@ -11,15 +12,16 @@ namespace Shopee.Controllers;
 public class AdminController : Controller
 {
     private readonly ILogger<AdminController> _logger;
-    private AppDbContext _DB;
+    private AppDbContext _db;
 
     public AdminController(ILogger<AdminController> logger, AppDbContext dbContext)
     {
         _logger = logger;
-        _DB = dbContext;
+        _db = dbContext;
     }
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        ViewBag.OrderData = await _db.Orders.GroupBy(o => o.Status).Select(o => new { status = o.Key, count = o.Count() }).ToListAsync();
         return View();
     }
 
