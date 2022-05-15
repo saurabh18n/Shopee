@@ -36,6 +36,12 @@
                                             is </strong> @ord.Status
                                     </p>
                                 </div>
+                                @if (ord.Status != OrderStatus.Pending || ord.Status != OrderStatus.Cancelled)
+                                {
+                                    <div class="my-3">
+                                        <button class="btn btn-primary btn-inv-print" data-id="@ord.Id">Print Invoice</button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -138,3 +144,38 @@
         }
     </div>
 </div>
+
+@section Scripts{
+<script type="text/javascript">
+    $('.btn-inv-print').on('click', (e) => {
+        let orderId = $(e.target).data('id');
+        printPage('@Url.Action("PrintInvoice")/' + orderId);
+    });
+    function closePrint() {
+        document.body.removeChild(this.__container__);
+    }
+
+    function setPrint() {
+        this.contentWindow.__container__ = this;
+        this.contentWindow.onbeforeunload = closePrint;
+        this.contentWindow.onafterprint = closePrint;
+        this.contentWindow.focus(); // Required for IE
+        this.contentWindow.print();
+    }
+
+    function printPage(sURL) {
+        var oHideFrame = document.createElement("iframe");
+        oHideFrame.onload = setPrint;
+        oHideFrame.style.position = "fixed";
+        oHideFrame.style.right = "0";
+        oHideFrame.style.bottom = "0";
+        oHideFrame.style.width = "0";
+        oHideFrame.style.height = "0";
+        oHideFrame.style.border = "0";
+        oHideFrame.src = sURL;
+        document.body.appendChild(oHideFrame);
+    }
+
+
+</script>
+}

@@ -152,6 +152,7 @@
                                 <span class="pe-none">Saving...</span>
                             </div>
                             <div class="n-load pe-none">
+                                <i class="bi bi-check-circle"></i>
                                 <span class="pe-none">Accept</span>
                             </div>
                         </button>
@@ -163,7 +164,32 @@
                                 <span class="pe-none">Saving...</span>
                             </div>
                             <div class="n-load pe-none">
+                                <i class="bi bi-x-circle"></i>
                                 <span class="pe-none">Reject</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="col-auto px-0 me-1 my-2">
+                        <button id="btn-print-invoice" type="submit" class="btn btn-success" style="width: 105px;" role="button" disabled="@(Model.Status == OrderStatus.Pending || Model.Status == OrderStatus.Cancelled)" data-id="@Model.Id">
+                            <div class="load d-none">
+                                <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                            </div>
+                            <div class="n-load pe-none">
+                                <i class="bi bi-printer"></i>
+                                <span class="pe-none">Invoice</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="col-auto px-0 me-1 my-2">
+                        <button id="btn-print-address" type="submit" class="btn btn-success" style="width: 105px;" role="button" disabled="@(Model.Status == OrderStatus.Pending || Model.Status == OrderStatus.Cancelled)" data-id="@Model.Id">
+                            <div class="load d-none">
+                                <span class="spinner-border spinner-border-sm pe-none" role="status" aria-hidden="true"></span>
+                            </div>
+                            <div class="n-load pe-none">
+                                <i class="bi bi-printer"></i>
+                                <span class="pe-none">Address</span>
                             </div>
                         </button>
                     </div>
@@ -214,7 +240,7 @@
                         message = document.createElement('div');
                         $(message).append('<p>Order can not continue. Following items are not available in store</p>');
                         itemTable = document.createElement('table');
-                        itemTable.classList.add('table','text-left','border');
+                        itemTable.classList.add('table', 'text-left', 'border');
                         $(itemTable).append('<tr><th class="border text-left">Item</th><th class="border">Order</th><th class="border">Available</th></tr>');
                         data.data.forEach(item => {
                             $(itemTable).append(`<tr>
@@ -248,7 +274,7 @@
                 $(e.target).find('div.n-load').toggleClass('d-none');
                 if (data.success) {
                     $(`.btn[data-id="${orderId}"]`).prop('disabled', true);
-                } else {                  
+                } else {
                     showMessage(message, 'ERROR');
                 }
             },
@@ -257,5 +283,40 @@
             }
         })
     });
+
+    $('#btn-print-invoice').on('click', (e) => {
+        let orderId = $(e.target).data('id');
+        printPage('@Url.Action("PrintInvoice")/' + orderId);
+    });
+
+    $('#btn-print-address').on('click', (e) => {
+        let orderId = $(e.target).data('id');
+        printPage('@Url.Action("addressslip")/' + orderId);
+    });
+
+    function closePrint() {
+        document.body.removeChild(this.__container__);
+    }
+
+    function setPrint() {
+        this.contentWindow.__container__ = this;
+        this.contentWindow.onbeforeunload = closePrint;
+        this.contentWindow.onafterprint = closePrint;
+        this.contentWindow.focus(); // Required for IE
+        this.contentWindow.print();
+    }
+
+    function printPage(sURL) {
+        var oHideFrame = document.createElement("iframe");
+        oHideFrame.onload = setPrint;
+        oHideFrame.style.position = "fixed";
+        oHideFrame.style.right = "0";
+        oHideFrame.style.bottom = "0";
+        oHideFrame.style.width = "0";
+        oHideFrame.style.height = "0";
+        oHideFrame.style.border = "0";
+        oHideFrame.src = sURL;
+        document.body.appendChild(oHideFrame);
+    }
 </script>
 }

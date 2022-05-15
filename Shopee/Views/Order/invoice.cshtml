@@ -1,0 +1,92 @@
+@{
+    Layout = "";
+}
+@model Order
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/css/page.css" rel="stylesheet" />
+<div>
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column flex-grow-0 justify-content-center">
+            <img src="/img/Logo.png" style="height:100px;width:100px">
+        </div>
+        <div class="d-flex flex-column">
+            <span class="fs-1">Shopee</span>
+            <span class="fs-6">#122 Hebbal Industrial Area</span>
+            <span class="fs-6">Mysore 570017</span>
+            <span class="fs-6">9873918589</span>
+        </div>
+        <div class="d-flex flex-column ms-auto justify-content-end">
+            <span class="fs-6">Invoice#:<strong> @Model.Id.ToString().Replace("-","").Substring(0,10)</strong></span>
+            <span class="fs-6">Date: <strong>@Model.OrderTime.ToString("dd'-'MM'-'yyyy hh':'mm':'ss")</strong></span>
+        </div>
+    </div>
+    <hr class="border-dark border-1">
+    <div class="d-flex flex-row my-2">
+        <div class="d-flex flex-column flex-grow-0"></div>
+        <div class="d-flex flex-column">
+            <span class="fs-6">To,</span>
+            <span class="fs-5"><strong>@Model.OrderByUser.FirstName @Model.OrderByUser.LastName</strong></span>
+            <span class="fs-6">@Model.Address</span>
+            <span class="fs-6">@Model.OrderByUser.ContactNumber</span>
+        </div>
+    </div>
+    <hr class="border-dark border-1">
+    <table class="table bordered">
+        <tbody>
+            <tr class="bg-secondary text-white">
+                <th>#</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Tax</th>
+                <th>Total</th>
+            </tr>
+            @{
+                double totalItems = 0;
+                double totalTax = 0;
+                double tempItem = 0;
+                double temptax = 0;
+            }
+            @foreach (var item in Model.Items.Select((item, index) => new { index = index, oi = item }))
+            {
+                <tr>
+                    <td>@(item.index+1)</td>
+                    <td>@item.oi.Product.Title</td>
+                    <td>@item.oi.Quantity</td>
+                    <td class="text-end">@item.oi.Product.UnitPrice</td>
+                    @{
+                        tempItem = item.oi.Product.UnitPrice * item.oi.Quantity;
+                        totalItems += tempItem;
+                        temptax = tempItem * item.oi.Product.tax / 100;
+                        totalTax += temptax;
+                    }
+                    <td class="text-end">@tempItem</td>
+                    <td class="text-end">@temptax</td>
+                    <td class="text-end">@(tempItem + temptax)</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="5" class="border-0"></td>
+                <td>Subtotal</td>
+                <td class="text-end">@totalItems</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="border-0"></td>
+                <td>Tax</td>
+                <td class="text-end">@totalTax</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="border-0"></td>
+                <td><strong>Total</strong></td>
+                <td class="text-end">@(totalItems+totalTax)</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr class="border-dark border-1">
+    <div class="d-flex flex-row" style="height: 3CM;">
+        <div class="d-flex flex-column ms-auto justify-content-end">
+            <span class="fs-6">For Shopee</span>
+        </div>
+    </div>
+</div>

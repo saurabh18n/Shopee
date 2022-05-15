@@ -239,6 +239,25 @@ public class OrderController : Controller
         _db.Orders.Add(order);
         _db.CartItems.RemoveRange(cil);
         await _db.SaveChangesAsync();
-        return RedirectToAction(nameof(Checkout));
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet, Authorize]
+    public async Task<IActionResult> PrintInvoice(Guid Id)
+    {
+        Order? ord = _db.Orders
+        .Include(o => o.OrderByUser)
+        .Include(o => o.Items).ThenInclude(oi => oi.Product)
+        .FirstOrDefault(o => o.Id == Id);
+        return View("invoice", ord);
+    }
+    [HttpGet, Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> AddressSlip(Guid Id)
+    {
+        Order? ord = _db.Orders
+        .Include(o => o.OrderByUser)
+        .Include(o => o.Shipping)
+        .FirstOrDefault(o => o.Id == Id);
+        return View("AddressSlip", ord);
     }
 }

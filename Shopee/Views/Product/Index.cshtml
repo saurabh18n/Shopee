@@ -67,13 +67,11 @@
                         </div>
                     }
                 </div>
-                <button class="carousel-control-prev" type="button"
-                data-bs-target="#a@{@item.Id.ToString().Replace("-","");}" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#a@{@item.Id.ToString().Replace("-","");}" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button"
-                data-bs-target="#a@{@item.Id.ToString().Replace("-","");}" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#a@{@item.Id.ToString().Replace("-","");}" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -85,10 +83,32 @@
             <div class="my-2 text-center">
                 <a href="/product/p/@{@item.Id}" class="btn btn-primary me-3">
                     <i class="bi bi-search"></i></a>
-                <a asp-action="add" asp-controller="cart" class="btn btn-primary">
-                    <i class="bi bi-bag-check"></i>
-                </a>
+                <button class="btn btn-primary btn-addtocart" data-id="@item.Id">
+                    <i class="bi bi-bag-check pe-none"></i>
+                </button>
             </div>
         </div>
     }
 </div>
+
+@section Scripts{
+<script type="text/javascript">
+    $('.btn-addtocart').on('click', (e) => {
+        pid = $(e.target).data('id');
+        $.ajax({
+            url: `@Url.Action("add","cart")?ProdId=${pid}&quantity=1`,
+            success: (data) => {
+                $('#cartCount').text(parseInt($('#cartCount').text()) + 1)
+                showMessage("Item Added to cart successfully", "SUCCESS");
+            },
+            error: (err) => {
+                if (err.status === 401) {
+                    showMessage("Please Login to add items to Cart", "ERROR");
+                } else {
+                    showMessage("Something Went Wrong Please try after some time", "ERROR");
+                }
+            }
+        })
+    })
+</script>
+}
